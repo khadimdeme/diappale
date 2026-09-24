@@ -2,9 +2,10 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentUser } from "@/lib/diapale/auth";
-import { getMyBaseProfile, getMyCandidateProfile } from "@/lib/diapale/candidates";
+import { getMyBaseProfile, getMyCandidateProfile, listMyPortfolio } from "@/lib/diapale/candidates";
 import TopNav from "@/components/TopNav";
 import ProfileForm from "./ProfileForm";
+import PortfolioSection from "./PortfolioSection";
 
 export default async function ProfilPage() {
   const supabase = await createClient();
@@ -13,6 +14,7 @@ export default async function ProfilPage() {
 
   const profile = await getMyBaseProfile(supabase, user.id);
   const candidateProfile = await getMyCandidateProfile(supabase, user.id);
+  const portfolio = await listMyPortfolio(supabase, user.id);
 
   return (
     <main className="mx-auto w-full max-w-2xl px-5 py-6">
@@ -39,6 +41,7 @@ export default async function ProfilPage() {
             disponible: candidateProfile?.disponible ?? true,
           }}
         />
+        <PortfolioSection userId={user.id} initialItems={portfolio} />
       </div>
     </main>
   );

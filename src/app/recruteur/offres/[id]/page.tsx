@@ -41,7 +41,7 @@ export default async function OffreCandidatsPage({
             Personne n&apos;a encore consulté ou postulé à cette offre.
           </div>
         )}
-        {candidates.map(({ interestType, profile, candidateProfile }) => (
+        {candidates.map(({ interestType, profile, candidateProfile, portfolio }) => (
           <div
             key={profile.id}
             className="rounded-2xl border border-border bg-bg p-4"
@@ -70,6 +70,27 @@ export default async function OffreCandidatsPage({
                     ))}
                   </div>
                 ) : null}
+                {portfolio.length > 0 ? (
+                  <div className="mt-3">
+                    <p className="mb-1.5 text-[11px] font-bold text-muted">Réalisations</p>
+                    <div className="flex flex-wrap gap-2">
+                      {portfolio.map((p) => (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          key={p.id}
+                          src={p.image_url}
+                          alt={p.label}
+                          title={p.label}
+                          className="h-16 w-16 rounded-lg border border-border object-cover"
+                        />
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <p className="mt-2 text-xs italic text-muted">
+                    Aucune réalisation ajoutée — le CV suffit pour ce profil.
+                  </p>
+                )}
               </div>
               {profile.phone && (
                 <a

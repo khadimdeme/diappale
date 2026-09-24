@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentUser } from "@/lib/diapale/auth";
-import { getMyBaseProfile, getMyCandidateProfile, listActiveOffers } from "@/lib/diapale/candidates";
+import { getMyBaseProfile, getMyCandidateProfile, listActiveOffers, listMyPortfolio } from "@/lib/diapale/candidates";
 import TopNav from "@/components/TopNav";
 import JobList from "./JobList";
 
@@ -16,6 +16,7 @@ export default async function CandidatPage() {
 
   const candidateProfile = await getMyCandidateProfile(supabase, user.id);
   const offers = await listActiveOffers(supabase);
+  const portfolio = await listMyPortfolio(supabase, user.id);
 
   const completeness = [
     candidateProfile?.metier,
@@ -42,12 +43,20 @@ export default async function CandidatPage() {
               {profile?.ville || "Ville non renseignée"}
             </p>
           </div>
-          <Link
-            href="/candidat/profil"
-            className="rounded-full bg-ink px-4 py-2 text-sm font-extrabold text-bg"
-          >
-            Modifier mon profil
-          </Link>
+          <div className="flex gap-2">
+            <Link
+              href="/candidat/cv"
+              className="rounded-full border border-border px-4 py-2 text-sm font-extrabold"
+            >
+              📄 Voir mon CV
+            </Link>
+            <Link
+              href="/candidat/profil"
+              className="rounded-full bg-ink px-4 py-2 text-sm font-extrabold text-bg"
+            >
+              Modifier mon profil
+            </Link>
+          </div>
         </div>
         <div className="mt-4 rounded-xl border border-border bg-surface-2 p-3.5">
           <div className="flex items-center justify-between text-xs font-extrabold">
@@ -60,6 +69,25 @@ export default async function CandidatPage() {
             />
           </div>
         </div>
+        {portfolio.length > 0 && (
+          <div className="mt-4">
+            <p className="mb-1.5 text-xs font-extrabold text-muted uppercase">
+              Réalisations
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {portfolio.map((p) => (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  key={p.id}
+                  src={p.image_url}
+                  alt={p.label}
+                  title={p.label}
+                  className="h-16 w-16 rounded-lg border border-border object-cover"
+                />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="mt-8">

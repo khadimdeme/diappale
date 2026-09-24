@@ -2,7 +2,7 @@
 // Les pages appellent ces fonctions, jamais `supabase.from(...)` directement.
 
 import type { SupabaseClient } from "@supabase/supabase-js";
-import type { CandidateProfile, JobOffer, Profile } from "./types";
+import type { CandidateProfile, JobOffer, PortfolioItem, Profile } from "./types";
 
 export async function getMyBaseProfile(supabase: SupabaseClient, userId: string) {
   const { data } = await supabase
@@ -103,6 +103,49 @@ export async function markInterest(
     { offer_id: offerId, candidate_id: candidateId, type },
     { onConflict: "offer_id,candidate_id,type" }
   );
+}
+
+export async function listMyPortfolio(supabase: SupabaseClient, candidateId: string) {
+  const { data } = await supabase
+    .from("portfolio_items")
+    .select("id, candidate_id, label, image_url")
+    .eq("candidate_id", candidateId)
+    .order("created_at", { ascending: false });
+  return (data ?? []) as PortfolioItem[];
+}
+
+/** Dépose une photo de réalisation dans le stockage, puis enregistre la ligne. */
+export async function addPortfolioItem(
+  supabase: SupabaseClient,
+  candidateId: string,
+  file: File,
+  label: string
+) {
+  const ext = file.name.split(".").pop();
+  const path = `${candidateId}/${crypto.randomUUID()}.${ext}`;
+
+  const { error: uploadError } = await supabase.storage
+    .from("portfolio")
+    .upload(path, file);
+  if (uploadError) return { error: uploadError };
+
+  const { data: pub } = supabase.storage.from("portfolio").getPublicUrl(path);
+
+  return supabase.from("portfolio_items").insert({
+    candidate_id: candidateId,
+    label,
+    image_url: pub.publicUrl,
+  });
+}
+
+export async function deletePortfolioItem(
+  supabase: SupabaseClient,
+  item: PortfolioItem
+) {
+  await supabase.from("portfolio_items").delete().eq("id", item.id);
+  // Le chemin de stockage est la fin de l'URL publique : {candidate_id}/{fichier}
+  const path = item.image_url.split("/portfolio/").pop();
+  if (path) await supabase.storage.from("portfolio").remove([path]);
 }
 
 export async function listCompaniesHiring(supabase: SupabaseClient) {

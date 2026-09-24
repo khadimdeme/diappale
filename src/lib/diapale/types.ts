@@ -49,8 +49,16 @@ export type OfferInterest = {
   created_at: string;
 };
 
+export type PortfolioItem = {
+  id: string;
+  candidate_id: string;
+  label: string;
+  image_url: string;
+};
+
 export type CandidateWithInterest = {
   interestType: "consulte" | "postule";
   profile: Profile;
   candidateProfile: CandidateProfile | null;
+  portfolio: PortfolioItem[];
 };

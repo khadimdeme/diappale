@@ -87,12 +87,16 @@ export async function getInterestedCandidates(
   const candidateIds = Array.from(new Set((interests ?? []).map((i) => i.candidate_id)));
   if (!candidateIds.length) return [];
 
-  const [{ data: profiles }, { data: candidateProfiles }] = await Promise.all([
+  const [{ data: profiles }, { data: candidateProfiles }, { data: portfolioItems }] = await Promise.all([
     supabase.from("profiles").select("id, role, full_name, phone, ville").in("id", candidateIds),
     supabase
       .from("candidate_profiles")
       .select("id, metier, competences, experience_years, niveau_etude, disponible, cni_verified")
       .in("id", candidateIds),
+    supabase
+      .from("portfolio_items")
+      .select("id, candidate_id, label, image_url")
+      .in("candidate_id", candidateIds),
   ]);
 
   const profileById = Object.fromEntries((profiles ?? []).map((p) => [p.id, p]));
@@ -104,5 +108,6 @@ export async function getInterestedCandidates(
       interestType: i.type as "consulte" | "postule",
       profile: profileById[i.candidate_id],
       candidateProfile: candidateById[i.candidate_id] ?? null,
+      portfolio: (portfolioItems ?? []).filter((p) => p.candidate_id === i.candidate_id),
     }));
 }
