@@ -1,49 +1,21 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { getCurrentUser, getCurrentUserRole } from "@/lib/diapale/auth";
+import { countInterestsByOffer, getMyCompany, listMyOffers } from "@/lib/diapale/recruiters";
 import TopNav from "@/components/TopNav";
 
 export default async function RecruteurPage() {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser(supabase);
   if (!user) redirect("/compte?mode=login&role=recruteur");
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("role")
-    .eq("id", user.id)
-    .single();
-  if (profile?.role !== "recruteur") redirect("/candidat");
+  const role = await getCurrentUserRole(supabase, user.id);
+  if (role !== "recruteur") redirect("/candidat");
 
-  const { data: company } = await supabase
-    .from("companies")
-    .select("company_name, secteur")
-    .eq("id", user.id)
-    .single();
-
-  const { data: offers } = await supabase
-    .from("job_offers")
-    .select("id, titre, ville, is_active, created_at")
-    .eq("recruiter_id", user.id)
-    .order("created_at", { ascending: false });
-
-  const offerIds = (offers ?? []).map((o) => o.id);
-  let interestCounts: Record<string, number> = {};
-  if (offerIds.length) {
-    const { data: interests } = await supabase
-      .from("offer_interests")
-      .select("offer_id")
-      .in("offer_id", offerIds);
-    interestCounts = (interests ?? []).reduce<Record<string, number>>(
-      (acc, i) => {
-        acc[i.offer_id] = (acc[i.offer_id] ?? 0) + 1;
-        return acc;
-      },
-      {}
-    );
-  }
+  const company = await getMyCompany(supabase, user.id);
+  const offers = await listMyOffers(supabase, user.id);
+  const interestCounts = await countInterestsByOffer(supabase, offers.map((o) => o.id));
 
   return (
     <main className="mx-auto w-full max-w-3xl px-5 py-6">
@@ -83,7 +55,7 @@ export default async function RecruteurPage() {
       </div>
 
       <div className="mt-4 grid gap-3">
-        {(offers ?? []).length === 0 && (
+        {offers.length === 0 && (
           <div className="rounded-2xl border border-border bg-surface-2 p-5 text-sm text-muted">
             Aucune offre publiée pour l&apos;instant.{" "}
             <Link href="/recruteur/offres/nouvelle" className="font-bold text-ink underline">
@@ -91,7 +63,7 @@ export default async function RecruteurPage() {
             </Link>
           </div>
         )}
-        {(offers ?? []).map((o) => (
+        {offers.map((o) => (
           <Link
             key={o.id}
             href={`/recruteur/offres/${o.id}`}

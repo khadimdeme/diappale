@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { updateMyProfile } from "@/lib/diapale/candidates";
 
 type Initial = {
   full_name: string;
@@ -37,29 +38,18 @@ export default function ProfileForm({
     e.preventDefault();
     setSaving(true);
 
-    await supabase
-      .from("profiles")
-      .update({
-        full_name: form.full_name,
-        phone: form.phone,
-        ville: form.ville,
-      })
-      .eq("id", userId);
-
-    await supabase
-      .from("candidate_profiles")
-      .update({
+    await updateMyProfile(
+      supabase,
+      userId,
+      { full_name: form.full_name, phone: form.phone, ville: form.ville },
+      {
         metier: form.metier,
-        competences: form.competences
-          .split(",")
-          .map((c) => c.trim())
-          .filter(Boolean),
-        experience_years: form.experience_years === "" ? null : Number(form.experience_years),
+        competences: form.competences,
+        experience_years: form.experience_years,
         niveau_etude: form.niveau_etude,
         disponible: form.disponible,
-        updated_at: new Date().toISOString(),
-      })
-      .eq("id", userId);
+      }
+    );
 
     setSaving(false);
     setSaved(true);

@@ -1,13 +1,12 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { getCurrentUser } from "@/lib/diapale/auth";
 import TopNav from "@/components/TopNav";
 import OfferForm from "./OfferForm";
 
 export default async function NouvelleOffrePage() {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser(supabase);
   if (!user) redirect("/compte?mode=login&role=recruteur");
 
   return (

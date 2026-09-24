@@ -3,13 +3,14 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { signOut as signOutService } from "@/lib/diapale/auth";
 
 export default function TopNav({ label }: { label: string }) {
   const router = useRouter();
   const supabase = createClient();
 
   async function signOut() {
-    await supabase.auth.signOut();
+    await signOutService(supabase);
     router.push("/");
     router.refresh();
   }

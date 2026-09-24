@@ -2,23 +2,14 @@
 
 import { useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-
-type Offer = {
-  id: string;
-  titre: string;
-  ville: string;
-  secteur: string | null;
-  type_contrat: string | null;
-  salaire: string | null;
-  contact_phone: string | null;
-  created_at: string;
-};
+import { markInterest } from "@/lib/diapale/candidates";
+import type { JobOffer } from "@/lib/diapale/types";
 
 export default function JobList({
   offers,
   candidateId,
 }: {
-  offers: Offer[];
+  offers: JobOffer[];
   candidateId: string;
 }) {
   const [q, setQ] = useState("");
@@ -37,15 +28,12 @@ export default function JobList({
       (!ville || o.ville === ville)
   );
 
-  async function postuler(offer: Offer) {
-    await supabase.from("offer_interests").upsert(
-      {
-        offer_id: offer.id,
-        candidate_id: candidateId,
-        type: "postule",
-      },
-      { onConflict: "offer_id,candidate_id,type" }
-    );
+  async function postuler(offer: JobOffer) {
+    await markInterest(supabase, {
+      offerId: offer.id,
+      candidateId,
+      type: "postule",
+    });
     setApplied((a) => ({ ...a, [offer.id]: true }));
 
     if (offer.contact_phone) {

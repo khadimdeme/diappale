@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { signIn, signUp } from "@/lib/diapale/auth";
+import type { Role } from "@/lib/diapale/types";
 
-type Role = "candidat" | "recruteur";
 type Mode = "signup" | "login";
 
 export default function AuthForm({
@@ -32,11 +33,7 @@ export default function AuthForm({
     setLoading(true);
 
     if (mode === "signup") {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: { data: { role } },
-      });
+      const { data, error } = await signUp(supabase, { email, password, role });
       setLoading(false);
       if (error) return setError(error.message);
       if (!data.session) {
@@ -47,10 +44,7 @@ export default function AuthForm({
       router.push("/tableau-de-bord");
       router.refresh();
     } else {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+      const { error } = await signIn(supabase, { email, password });
       setLoading(false);
       if (error) return setError(error.message);
       router.push("/tableau-de-bord");

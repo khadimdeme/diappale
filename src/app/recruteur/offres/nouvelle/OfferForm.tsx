@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { createOffer } from "@/lib/diapale/recruiters";
 
 export default function OfferForm({ recruiterId }: { recruiterId: string }) {
   const [titre, setTitre] = useState("");
@@ -21,8 +22,7 @@ export default function OfferForm({ recruiterId }: { recruiterId: string }) {
     setSaving(true);
     setError(null);
 
-    const { error } = await supabase.from("job_offers").insert({
-      recruiter_id: recruiterId,
+    const { error } = await createOffer(supabase, recruiterId, {
       titre,
       ville,
       type_contrat: typeContrat,

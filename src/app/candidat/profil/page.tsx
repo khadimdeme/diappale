@@ -1,26 +1,17 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { getCurrentUser } from "@/lib/diapale/auth";
+import { getMyBaseProfile, getMyCandidateProfile } from "@/lib/diapale/candidates";
 import TopNav from "@/components/TopNav";
 import ProfileForm from "./ProfileForm";
 
 export default async function ProfilPage() {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser(supabase);
   if (!user) redirect("/compte?mode=login&role=candidat");
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("full_name, phone, ville")
-    .eq("id", user.id)
-    .single();
-
-  const { data: candidateProfile } = await supabase
-    .from("candidate_profiles")
-    .select("metier, competences, experience_years, niveau_etude, disponible")
-    .eq("id", user.id)
-    .single();
+  const profile = await getMyBaseProfile(supabase, user.id);
+  const candidateProfile = await getMyCandidateProfile(supabase, user.id);
 
   return (
     <main className="mx-auto w-full max-w-2xl px-5 py-6">

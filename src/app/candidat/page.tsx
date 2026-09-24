@@ -1,37 +1,21 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { getCurrentUser } from "@/lib/diapale/auth";
+import { getMyBaseProfile, getMyCandidateProfile, listActiveOffers } from "@/lib/diapale/candidates";
 import TopNav from "@/components/TopNav";
 import JobList from "./JobList";
 
 export default async function CandidatPage() {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser(supabase);
   if (!user) redirect("/compte?mode=login&role=candidat");
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("role, full_name, ville")
-    .eq("id", user.id)
-    .single();
-
+  const profile = await getMyBaseProfile(supabase, user.id);
   if (profile?.role !== "candidat") redirect("/recruteur");
 
-  const { data: candidateProfile } = await supabase
-    .from("candidate_profiles")
-    .select("metier, competences, experience_years, niveau_etude, cni_verified")
-    .eq("id", user.id)
-    .single();
-
-  const { data: offers } = await supabase
-    .from("job_offers")
-    .select("id, titre, ville, secteur, type_contrat, salaire, contact_phone, created_at")
-    .eq("is_active", true)
-    .order("boosted_until", { ascending: false, nullsFirst: false })
-    .order("created_at", { ascending: false })
-    .limit(30);
+  const candidateProfile = await getMyCandidateProfile(supabase, user.id);
+  const offers = await listActiveOffers(supabase);
 
   const completeness = [
     candidateProfile?.metier,
@@ -86,7 +70,7 @@ export default async function CandidatPage() {
           Rechercher un emploi
         </h2>
       </div>
-      <JobList offers={offers ?? []} candidateId={user.id} />
+      <JobList offers={offers} candidateId={user.id} />
     </main>
   );
 }
