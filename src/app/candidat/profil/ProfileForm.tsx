@@ -54,6 +54,9 @@ export default function ProfileForm({
     setSaving(false);
     setSaved(true);
     router.refresh();
+
+    // Laisse voir la confirmation un instant, puis retour au tableau de bord.
+    setTimeout(() => router.push("/candidat"), 700);
   }
 
   return (

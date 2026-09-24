@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentUser } from "@/lib/diapale/auth";
 import { getMyBaseProfile, getMyCandidateProfile } from "@/lib/diapale/candidates";
@@ -16,7 +17,10 @@ export default async function ProfilPage() {
   return (
     <main className="mx-auto w-full max-w-2xl px-5 py-6">
       <TopNav label="Mon profil" />
-      <div className="mt-6 rounded-2xl border border-border bg-surface p-6">
+      <Link href="/candidat" className="mt-4 inline-block text-sm font-bold text-muted">
+        ← Retour à mon espace
+      </Link>
+      <div className="mt-3 rounded-2xl border border-border bg-surface p-6">
         <h1 className="font-display text-xl font-bold">Mon profil</h1>
         <p className="mt-1 text-sm text-muted">
           Le numéro de téléphone sert uniquement au contact WhatsApp — pas
