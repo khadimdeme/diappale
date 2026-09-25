@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { markInterest } from "@/lib/diapale/candidates";
 import { computeMatchScore } from "@/lib/diapale/matching";
+import { buildApplicationMessage } from "@/lib/diapale/applicationMessage";
 import type { CandidateProfile, JobOffer } from "@/lib/diapale/types";
 
 const TYPES_CONTRAT = ["CDI", "CDD", "Stage", "Alternance", "Mission", "Journalier", "Freelance"];
@@ -13,11 +14,13 @@ export default function JobList({
   candidateId,
   candidateProfile,
   candidateVille,
+  candidateName,
 }: {
   offers: JobOffer[];
   candidateId: string;
   candidateProfile: CandidateProfile | null;
   candidateVille: string | null;
+  candidateName: string | null;
 }) {
   const [q, setQ] = useState("");
   const [ville, setVille] = useState("");
@@ -45,20 +48,23 @@ export default function JobList({
     });
     setApplied((a) => ({ ...a, [offer.id]: true }));
 
+    const message = buildApplicationMessage({
+      offerTitre: offer.titre,
+      candidateName,
+      candidateProfile,
+    });
+
     if (channel === "whatsapp" && offer.contact_phone) {
-      const msg = encodeURIComponent(
-        `Bonjour, je suis intéressé(e) par l'offre "${offer.titre}" sur Diapalé.`
-      );
       window.open(
-        `https://wa.me/${offer.contact_phone.replace(/\D/g, "")}?text=${msg}`,
+        `https://wa.me/${offer.contact_phone.replace(/\D/g, "")}?text=${encodeURIComponent(message)}`,
         "_blank"
       );
     } else if (channel === "email" && offer.contact_email) {
       const subject = encodeURIComponent(`Candidature — ${offer.titre} (via Diapalé)`);
-      const body = encodeURIComponent(
-        `Bonjour,\n\nJe suis intéressé(e) par l'offre "${offer.titre}" trouvée sur Diapalé.\n\nCordialement.`
+      window.open(
+        `mailto:${offer.contact_email}?subject=${subject}&body=${encodeURIComponent(message)}`,
+        "_blank"
       );
-      window.open(`mailto:${offer.contact_email}?subject=${subject}&body=${body}`, "_blank");
     }
   }
 

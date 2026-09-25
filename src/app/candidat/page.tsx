@@ -114,6 +114,7 @@ export default async function CandidatPage() {
         candidateId={user.id}
         candidateProfile={candidateProfile}
         candidateVille={profile?.ville ?? null}
+        candidateName={profile?.full_name ?? null}
       />
     </main>
   );
