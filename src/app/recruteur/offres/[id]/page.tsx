@@ -101,6 +101,15 @@ export default async function OffreCandidatsPage({
                   )}
                 </div>
                 <div className="flex flex-col items-end gap-2">
+                  {candidateProfile?.cv_url && (
+                    <a
+                      href={candidateProfile.cv_url}
+                      target="_blank"
+                      className="rounded-[9px] border border-border bg-surface px-3.5 py-2.5 text-xs font-bold"
+                    >
+                      📄 Voir le CV
+                    </a>
+                  )}
                   {profile.phone && (
                     <a
                       href={`https://wa.me/${profile.phone.replace(/\D/g, "")}`}

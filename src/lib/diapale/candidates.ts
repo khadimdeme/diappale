@@ -19,7 +19,7 @@ export async function getMyBaseProfile(supabase: SupabaseClient, userId: string)
 export async function getMyCandidateProfile(supabase: SupabaseClient, userId: string) {
   const { data } = await supabase
     .from("candidate_profiles")
-    .select("id, metier, competences, experience_years, niveau_etude, disponible, cni_verified")
+    .select("id, metier, competences, experience_years, niveau_etude, disponible, cni_verified, cv_url")
     .eq("id", userId)
     .single();
   return data as CandidateProfile | null;
@@ -104,6 +104,43 @@ export async function markInterest(
     { offer_id: offerId, candidate_id: candidateId, type },
     { onConflict: "offer_id,candidate_id,type" }
   );
+}
+
+/**
+ * Dépose un CV (PDF ou photo) — remplace l'ancien s'il existe.
+ * Un seul CV à la fois, changeable quand le candidat veut.
+ */
+export async function uploadCv(supabase: SupabaseClient, candidateId: string, file: File) {
+  const previous = await getMyCandidateProfile(supabase, candidateId);
+
+  const ext = file.name.split(".").pop();
+  const path = `${candidateId}/${crypto.randomUUID()}.${ext}`;
+
+  const { error: uploadError } = await supabase.storage.from("cv").upload(path, file);
+  if (uploadError) return { error: uploadError };
+
+  const { data: pub } = supabase.storage.from("cv").getPublicUrl(path);
+
+  const res = await supabase
+    .from("candidate_profiles")
+    .update({ cv_url: pub.publicUrl, updated_at: new Date().toISOString() })
+    .eq("id", candidateId);
+
+  if (previous?.cv_url) {
+    const oldPath = previous.cv_url.split("/cv/").pop();
+    if (oldPath) await supabase.storage.from("cv").remove([oldPath]);
+  }
+
+  return res;
+}
+
+export async function deleteCv(supabase: SupabaseClient, candidateId: string, cvUrl: string) {
+  await supabase
+    .from("candidate_profiles")
+    .update({ cv_url: null, updated_at: new Date().toISOString() })
+    .eq("id", candidateId);
+  const path = cvUrl.split("/cv/").pop();
+  if (path) await supabase.storage.from("cv").remove([path]);
 }
 
 export async function listMyPortfolio(supabase: SupabaseClient, candidateId: string) {

@@ -24,7 +24,42 @@ export default async function CvPage() {
         <PrintButton />
       </div>
 
+      {candidateProfile?.cv_url && (
+        <div className="mt-5 rounded-2xl border border-border bg-surface p-6 print:hidden">
+          <p className="text-xs font-extrabold text-muted uppercase">CV déposé</p>
+          <p className="mt-1 text-sm text-muted">
+            Le fichier que tu as envoyé toi-même — c&apos;est celui-là que les recruteurs voient en premier.
+          </p>
+          {candidateProfile.cv_url.toLowerCase().endsWith(".pdf") ? (
+            <iframe
+              src={candidateProfile.cv_url}
+              className="mt-3 h-[480px] w-full rounded-xl border border-border"
+              title="Mon CV"
+            />
+          ) : (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={candidateProfile.cv_url}
+              alt="Mon CV"
+              className="mt-3 max-h-[480px] w-full rounded-xl border border-border object-contain"
+            />
+          )}
+          <a
+            href={candidateProfile.cv_url}
+            target="_blank"
+            className="mt-3 inline-block text-sm font-bold text-ink underline underline-offset-2"
+          >
+            Ouvrir dans un nouvel onglet
+          </a>
+        </div>
+      )}
+
       <div className="mt-5 rounded-2xl border border-border bg-surface p-8 print:rounded-none print:border-none print:p-0">
+        {candidateProfile?.cv_url && (
+          <p className="mb-4 text-xs font-extrabold text-muted uppercase print:hidden">
+            Profil complet (généré automatiquement)
+          </p>
+        )}
         <div className="flex items-center justify-between border-b border-border pb-4">
           <div>
             <h1 className="font-display text-2xl font-bold">

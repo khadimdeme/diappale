@@ -7,6 +7,7 @@ import TopNav from "@/components/TopNav";
 import ProfileForm from "./ProfileForm";
 import PortfolioSection from "./PortfolioSection";
 import ExperienceSection from "./ExperienceSection";
+import CvSection from "./CvSection";
 
 export default async function ProfilPage() {
   const supabase = await createClient();
@@ -43,6 +44,7 @@ export default async function ProfilPage() {
             disponible: candidateProfile?.disponible ?? true,
           }}
         />
+        <CvSection userId={user.id} initialCvUrl={candidateProfile?.cv_url ?? null} />
         <ExperienceSection userId={user.id} initialItems={experiences} />
         <PortfolioSection userId={user.id} initialItems={portfolio} />
       </div>

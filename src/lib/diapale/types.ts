@@ -19,6 +19,7 @@ export type CandidateProfile = {
   niveau_etude: string | null;
   disponible: boolean;
   cni_verified: boolean;
+  cv_url: string | null;
 };
 
 export type Company = {

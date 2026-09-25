@@ -159,7 +159,7 @@ export async function getInterestedCandidates(
     supabase.from("profiles").select("id, role, full_name, phone, ville").in("id", candidateIds),
     supabase
       .from("candidate_profiles")
-      .select("id, metier, competences, experience_years, niveau_etude, disponible, cni_verified")
+      .select("id, metier, competences, experience_years, niveau_etude, disponible, cni_verified, cv_url")
       .in("id", candidateIds),
     supabase
       .from("portfolio_items")
