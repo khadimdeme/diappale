@@ -26,6 +26,18 @@ export type Company = {
   company_name: string;
   secteur: string | null;
   contact_phone: string | null;
+  ville: string | null;
+  about: string | null;
+};
+
+export type CandidateExperience = {
+  id: string;
+  candidate_id: string;
+  poste: string;
+  entreprise: string | null;
+  date_debut: string | null;
+  date_fin: string | null;
+  description: string | null;
 };
 
 export type ExperienceLevel = "aucune" | "1-2" | "3-5" | "5+";
@@ -40,6 +52,7 @@ export type JobOffer = {
   description: string | null;
   salaire: string | null;
   contact_phone: string | null;
+  contact_email: string | null;
   is_active: boolean;
   created_at: string;
   // Profil recherché — facultatif, sert au score de compatibilité.

@@ -2,10 +2,10 @@
 // Les pages appellent ces fonctions, jamais `supabase.from(...)` directement.
 
 import type { SupabaseClient } from "@supabase/supabase-js";
-import type { CandidateProfile, JobOffer, MyApplication, PortfolioItem, Profile } from "./types";
+import type { CandidateExperience, CandidateProfile, JobOffer, MyApplication, PortfolioItem, Profile } from "./types";
 
 const OFFER_COLUMNS =
-  "id, recruiter_id, titre, ville, secteur, type_contrat, description, salaire, contact_phone, is_active, created_at, experience_level, niveau_etude_requis, competences_requises";
+  "id, recruiter_id, titre, ville, secteur, type_contrat, description, salaire, contact_phone, contact_email, is_active, created_at, experience_level, niveau_etude_requis, competences_requises";
 
 export async function getMyBaseProfile(supabase: SupabaseClient, userId: string) {
   const { data } = await supabase
@@ -149,6 +149,42 @@ export async function deletePortfolioItem(
   if (path) await supabase.storage.from("portfolio").remove([path]);
 }
 
+export async function listMyExperiences(supabase: SupabaseClient, candidateId: string) {
+  const { data } = await supabase
+    .from("candidate_experiences")
+    .select("id, candidate_id, poste, entreprise, date_debut, date_fin, description")
+    .eq("candidate_id", candidateId)
+    .order("date_debut", { ascending: false });
+  return (data ?? []) as CandidateExperience[];
+}
+
+export type NewExperienceInput = {
+  poste: string;
+  entreprise: string;
+  date_debut: string; // "" si non précisé
+  date_fin: string; // "" si poste actuel
+  description: string;
+};
+
+export async function addExperience(
+  supabase: SupabaseClient,
+  candidateId: string,
+  exp: NewExperienceInput
+) {
+  return supabase.from("candidate_experiences").insert({
+    candidate_id: candidateId,
+    poste: exp.poste,
+    entreprise: exp.entreprise || null,
+    date_debut: exp.date_debut || null,
+    date_fin: exp.date_fin || null,
+    description: exp.description || null,
+  });
+}
+
+export async function deleteExperience(supabase: SupabaseClient, experienceId: string) {
+  return supabase.from("candidate_experiences").delete().eq("id", experienceId);
+}
+
 /** "Mes candidatures" — chaque offre à laquelle le candidat a postulé, avec son statut. */
 export async function listMyApplications(
   supabase: SupabaseClient,
@@ -191,12 +227,4 @@ export async function listMyApplications(
         createdAt: i.created_at,
       };
     });
-}
-
-export async function listCompaniesHiring(supabase: SupabaseClient) {
-  const { data } = await supabase
-    .from("companies")
-    .select("id, company_name, secteur, contact_phone")
-    .limit(20);
-  return data ?? [];
 }

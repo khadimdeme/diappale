@@ -5,15 +5,41 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { CandidateWithInterest, Company, ExperienceLevel, InterestStatus, JobOffer } from "./types";
 
 const OFFER_COLUMNS =
-  "id, recruiter_id, titre, ville, secteur, type_contrat, description, salaire, contact_phone, is_active, created_at, experience_level, niveau_etude_requis, competences_requises";
+  "id, recruiter_id, titre, ville, secteur, type_contrat, description, salaire, contact_phone, contact_email, is_active, created_at, experience_level, niveau_etude_requis, competences_requises";
 
 export async function getMyCompany(supabase: SupabaseClient, userId: string) {
   const { data } = await supabase
     .from("companies")
-    .select("id, company_name, secteur, contact_phone")
+    .select("id, company_name, secteur, contact_phone, ville, about")
     .eq("id", userId)
     .single();
   return data as Company | null;
+}
+
+export type CompanyUpdate = {
+  company_name: string;
+  secteur: string;
+  ville: string;
+  contact_phone: string;
+  about: string;
+};
+
+export async function updateMyCompany(
+  supabase: SupabaseClient,
+  userId: string,
+  company: CompanyUpdate
+) {
+  return supabase
+    .from("companies")
+    .update({
+      company_name: company.company_name,
+      secteur: company.secteur,
+      ville: company.ville,
+      contact_phone: company.contact_phone,
+      about: company.about,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", userId);
 }
 
 export async function listMyOffers(supabase: SupabaseClient, recruiterId: string) {
@@ -74,6 +100,7 @@ export type NewOfferInput = {
   description: string;
   salaire: string;
   contact_phone: string;
+  contact_email?: string;
   experience_level?: ExperienceLevel | "";
   niveau_etude_requis?: string;
   competences_requises?: string; // saisie brute, séparée par des virgules
@@ -92,6 +119,7 @@ export async function createOffer(
     description: offer.description,
     salaire: offer.salaire,
     contact_phone: offer.contact_phone,
+    contact_email: offer.contact_email || null,
     experience_level: offer.experience_level || null,
     niveau_etude_requis: offer.niveau_etude_requis || null,
     competences_requises: (offer.competences_requises ?? "")

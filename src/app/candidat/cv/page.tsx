@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentUser } from "@/lib/diapale/auth";
-import { getMyBaseProfile, getMyCandidateProfile, listMyPortfolio } from "@/lib/diapale/candidates";
+import { getMyBaseProfile, getMyCandidateProfile, listMyExperiences, listMyPortfolio } from "@/lib/diapale/candidates";
 import PrintButton from "./PrintButton";
 
 export default async function CvPage() {
@@ -13,6 +13,7 @@ export default async function CvPage() {
   const profile = await getMyBaseProfile(supabase, user.id);
   const candidateProfile = await getMyCandidateProfile(supabase, user.id);
   const portfolio = await listMyPortfolio(supabase, user.id);
+  const experiences = await listMyExperiences(supabase, user.id);
 
   return (
     <main className="mx-auto w-full max-w-2xl px-5 py-6 print:max-w-none print:p-0">
@@ -67,6 +68,28 @@ export default async function CvPage() {
                 <span key={c} className="rounded-full bg-surface-2 px-2.5 py-1 text-xs font-bold">
                   {c}
                 </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {experiences.length > 0 && (
+          <div className="mt-5">
+            <p className="text-xs font-extrabold text-muted uppercase">Expériences</p>
+            <div className="mt-2 grid gap-2">
+              {experiences.map((exp) => (
+                <div key={exp.id}>
+                  <p className="text-sm font-bold">
+                    {exp.poste}
+                    {exp.entreprise ? ` — ${exp.entreprise}` : ""}
+                  </p>
+                  {exp.date_debut && (
+                    <p className="text-xs text-muted">
+                      {exp.date_debut.slice(0, 4)} →{" "}
+                      {exp.date_fin ? exp.date_fin.slice(0, 4) : "aujourd'hui"}
+                    </p>
+                  )}
+                </div>
               ))}
             </div>
           </div>

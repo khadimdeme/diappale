@@ -37,7 +37,7 @@ export default function JobList({
       (!typeContrat || o.type_contrat === typeContrat)
   );
 
-  async function postuler(offer: JobOffer) {
+  async function postuler(offer: JobOffer, channel: "whatsapp" | "email") {
     await markInterest(supabase, {
       offerId: offer.id,
       candidateId,
@@ -45,7 +45,7 @@ export default function JobList({
     });
     setApplied((a) => ({ ...a, [offer.id]: true }));
 
-    if (offer.contact_phone) {
+    if (channel === "whatsapp" && offer.contact_phone) {
       const msg = encodeURIComponent(
         `Bonjour, je suis intéressé(e) par l'offre "${offer.titre}" sur Diapalé.`
       );
@@ -53,6 +53,12 @@ export default function JobList({
         `https://wa.me/${offer.contact_phone.replace(/\D/g, "")}?text=${msg}`,
         "_blank"
       );
+    } else if (channel === "email" && offer.contact_email) {
+      const subject = encodeURIComponent(`Candidature — ${offer.titre} (via Diapalé)`);
+      const body = encodeURIComponent(
+        `Bonjour,\n\nJe suis intéressé(e) par l'offre "${offer.titre}" trouvée sur Diapalé.\n\nCordialement.`
+      );
+      window.open(`mailto:${offer.contact_email}?subject=${subject}&body=${body}`, "_blank");
     }
   }
 
@@ -128,12 +134,21 @@ export default function JobList({
               )}
               <div className="mt-1 flex flex-wrap gap-2">
                 <button
-                  onClick={() => postuler(o)}
+                  onClick={() => postuler(o, "whatsapp")}
                   disabled={applied[o.id]}
                   className="rounded-[9px] bg-[#25D366] px-3.5 py-2.5 text-xs font-bold text-[#06210f] disabled:opacity-60"
                 >
                   {applied[o.id] ? "✅ Candidature envoyée" : "💬 Postuler via WhatsApp"}
                 </button>
+                {o.contact_email && (
+                  <button
+                    onClick={() => postuler(o, "email")}
+                    disabled={applied[o.id]}
+                    className="rounded-[9px] border border-border bg-surface px-3.5 py-2.5 text-xs font-bold disabled:opacity-60"
+                  >
+                    📧 Postuler par email
+                  </button>
+                )}
               </div>
             </div>
           );

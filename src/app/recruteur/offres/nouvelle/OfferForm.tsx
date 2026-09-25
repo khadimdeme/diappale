@@ -15,6 +15,7 @@ export default function OfferForm({ recruiterId }: { recruiterId: string }) {
   const [description, setDescription] = useState("");
   const [salaire, setSalaire] = useState("");
   const [contactPhone, setContactPhone] = useState("");
+  const [contactEmail, setContactEmail] = useState("");
   const [experienceLevel, setExperienceLevel] = useState<ExperienceLevel | "">("");
   const [niveauEtude, setNiveauEtude] = useState("");
   const [competencesRecherchees, setCompetencesRecherchees] = useState("");
@@ -36,6 +37,7 @@ export default function OfferForm({ recruiterId }: { recruiterId: string }) {
       description,
       salaire,
       contact_phone: contactPhone,
+      contact_email: contactEmail,
       experience_level: experienceLevel,
       niveau_etude_requis: niveauEtude,
       competences_requises: competencesRecherchees,
@@ -95,6 +97,15 @@ export default function OfferForm({ recruiterId }: { recruiterId: string }) {
           placeholder="+221 77 000 00 00"
           value={contactPhone}
           onChange={(e) => setContactPhone(e.target.value)}
+        />
+      </Field>
+      <Field label="Email de contact (facultatif)">
+        <input
+          type="email"
+          className="in"
+          placeholder="recrutement@entreprise.sn"
+          value={contactEmail}
+          onChange={(e) => setContactEmail(e.target.value)}
         />
       </Field>
       <div className="sm:col-span-2">

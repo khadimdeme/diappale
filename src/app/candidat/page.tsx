@@ -96,13 +96,18 @@ export default async function CandidatPage() {
         )}
       </div>
 
-      <div className="mt-8">
-        <p className="text-xs font-extrabold tracking-wide text-bloom uppercase">
-          Offres
-        </p>
-        <h2 className="mt-1 font-display text-xl font-bold">
-          Rechercher un emploi
-        </h2>
+      <div className="mt-8 flex flex-wrap items-end justify-between gap-2">
+        <div>
+          <p className="text-xs font-extrabold tracking-wide text-bloom uppercase">
+            Offres
+          </p>
+          <h2 className="mt-1 font-display text-xl font-bold">
+            Rechercher un emploi
+          </h2>
+        </div>
+        <Link href="/entreprises" className="text-sm font-bold text-ink underline underline-offset-2">
+          🏢 Découvrir les entreprises
+        </Link>
       </div>
       <JobList
         offers={offers}

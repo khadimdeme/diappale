@@ -34,12 +34,20 @@ export default async function RecruteurPage() {
             {company?.secteur || "Secteur non renseigné"}
           </p>
         </div>
-        <Link
-          href="/recruteur/offres/nouvelle"
-          className="rounded-full bg-ink px-4 py-2 text-sm font-extrabold text-bg"
-        >
-          📝 Publier une offre
-        </Link>
+        <div className="flex flex-wrap gap-2">
+          <Link
+            href="/recruteur/entreprise"
+            className="rounded-full border border-border px-4 py-2 text-sm font-extrabold"
+          >
+            🏢 Modifier l&apos;entreprise
+          </Link>
+          <Link
+            href="/recruteur/offres/nouvelle"
+            className="rounded-full bg-ink px-4 py-2 text-sm font-extrabold text-bg"
+          >
+            📝 Publier une offre
+          </Link>
+        </div>
       </div>
 
       <div className="mt-4 grid grid-cols-3 gap-3">
