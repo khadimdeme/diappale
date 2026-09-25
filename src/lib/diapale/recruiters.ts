@@ -2,7 +2,10 @@
 // Les pages appellent ces fonctions, jamais `supabase.from(...)` directement.
 
 import type { SupabaseClient } from "@supabase/supabase-js";
-import type { CandidateWithInterest, Company, JobOffer } from "./types";
+import type { CandidateWithInterest, Company, ExperienceLevel, InterestStatus, JobOffer } from "./types";
+
+const OFFER_COLUMNS =
+  "id, recruiter_id, titre, ville, secteur, type_contrat, description, salaire, contact_phone, is_active, created_at, experience_level, niveau_etude_requis, competences_requises";
 
 export async function getMyCompany(supabase: SupabaseClient, userId: string) {
   const { data } = await supabase
@@ -16,7 +19,7 @@ export async function getMyCompany(supabase: SupabaseClient, userId: string) {
 export async function listMyOffers(supabase: SupabaseClient, recruiterId: string) {
   const { data } = await supabase
     .from("job_offers")
-    .select("id, recruiter_id, titre, ville, secteur, type_contrat, description, salaire, contact_phone, is_active, created_at")
+    .select(OFFER_COLUMNS)
     .eq("recruiter_id", recruiterId)
     .order("created_at", { ascending: false });
   return (data ?? []) as JobOffer[];
@@ -36,6 +39,34 @@ export async function countInterestsByOffer(supabase: SupabaseClient, offerIds: 
   }, {});
 }
 
+/** Stats globales pour le tableau de bord ("3 offres actives, 18 candidatures…"). */
+export async function getRecruiterStats(supabase: SupabaseClient, recruiterId: string) {
+  const { data: offers } = await supabase
+    .from("job_offers")
+    .select("id, is_active")
+    .eq("recruiter_id", recruiterId);
+
+  const offerIds = (offers ?? []).map((o) => o.id);
+  const activeOffers = (offers ?? []).filter((o) => o.is_active).length;
+
+  if (!offerIds.length) {
+    return { activeOffers: 0, totalCandidatures: 0, preselectionnes: 0 };
+  }
+
+  const { data: interests } = await supabase
+    .from("offer_interests")
+    .select("status")
+    .in("offer_id", offerIds);
+
+  const totalCandidatures = interests?.length ?? 0;
+  const preselectionnes =
+    interests?.filter((i) =>
+      ["preselectionne", "entretien", "accepte"].includes(i.status)
+    ).length ?? 0;
+
+  return { activeOffers, totalCandidatures, preselectionnes };
+}
+
 export type NewOfferInput = {
   titre: string;
   ville: string;
@@ -43,6 +74,9 @@ export type NewOfferInput = {
   description: string;
   salaire: string;
   contact_phone: string;
+  experience_level?: ExperienceLevel | "";
+  niveau_etude_requis?: string;
+  competences_requises?: string; // saisie brute, séparée par des virgules
 };
 
 export async function createOffer(
@@ -58,13 +92,19 @@ export async function createOffer(
     description: offer.description,
     salaire: offer.salaire,
     contact_phone: offer.contact_phone,
+    experience_level: offer.experience_level || null,
+    niveau_etude_requis: offer.niveau_etude_requis || null,
+    competences_requises: (offer.competences_requises ?? "")
+      .split(",")
+      .map((c) => c.trim())
+      .filter(Boolean),
   });
 }
 
 export async function getOffer(supabase: SupabaseClient, offerId: string) {
   const { data } = await supabase
     .from("job_offers")
-    .select("id, recruiter_id, titre, ville, secteur, type_contrat, description, salaire, contact_phone, is_active, created_at")
+    .select(OFFER_COLUMNS)
     .eq("id", offerId)
     .single();
   return data as JobOffer | null;
@@ -80,7 +120,7 @@ export async function getInterestedCandidates(
 ): Promise<CandidateWithInterest[]> {
   const { data: interests } = await supabase
     .from("offer_interests")
-    .select("type, created_at, candidate_id")
+    .select("type, status, created_at, candidate_id")
     .eq("offer_id", offerId)
     .order("created_at", { ascending: false });
 
@@ -106,8 +146,23 @@ export async function getInterestedCandidates(
     .filter((i) => profileById[i.candidate_id])
     .map((i) => ({
       interestType: i.type as "consulte" | "postule",
+      status: i.status as InterestStatus,
       profile: profileById[i.candidate_id],
       candidateProfile: candidateById[i.candidate_id] ?? null,
       portfolio: (portfolioItems ?? []).filter((p) => p.candidate_id === i.candidate_id),
     }));
+}
+
+/** Fait avancer une candidature dans le suivi (nouveau -> vue -> présélectionné -> …). */
+export async function updateInterestStatus(
+  supabase: SupabaseClient,
+  offerId: string,
+  candidateId: string,
+  status: InterestStatus
+) {
+  return supabase
+    .from("offer_interests")
+    .update({ status })
+    .eq("offer_id", offerId)
+    .eq("candidate_id", candidateId);
 }

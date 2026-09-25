@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentUser, getCurrentUserRole } from "@/lib/diapale/auth";
-import { countInterestsByOffer, getMyCompany, listMyOffers } from "@/lib/diapale/recruiters";
+import { countInterestsByOffer, getMyCompany, getRecruiterStats, listMyOffers } from "@/lib/diapale/recruiters";
 import TopNav from "@/components/TopNav";
 
 export default async function RecruteurPage() {
@@ -16,6 +16,7 @@ export default async function RecruteurPage() {
   const company = await getMyCompany(supabase, user.id);
   const offers = await listMyOffers(supabase, user.id);
   const interestCounts = await countInterestsByOffer(supabase, offers.map((o) => o.id));
+  const stats = await getRecruiterStats(supabase, user.id);
 
   return (
     <main className="mx-auto w-full max-w-3xl px-5 py-6">
@@ -39,6 +40,12 @@ export default async function RecruteurPage() {
         >
           📝 Publier une offre
         </Link>
+      </div>
+
+      <div className="mt-4 grid grid-cols-3 gap-3">
+        <StatTile label="Offres actives" value={stats.activeOffers} />
+        <StatTile label="Candidatures" value={stats.totalCandidatures} />
+        <StatTile label="Présélectionnés" value={stats.preselectionnes} />
       </div>
 
       <div className="mt-8">
@@ -82,5 +89,14 @@ export default async function RecruteurPage() {
         ))}
       </div>
     </main>
+  );
+}
+
+function StatTile({ label, value }: { label: string; value: number }) {
+  return (
+    <div className="rounded-2xl border border-border bg-surface p-4 text-center">
+      <div className="font-display text-2xl font-extrabold">{value}</div>
+      <div className="mt-1 text-[11px] font-bold text-muted">{label}</div>
+    </div>
   );
 }

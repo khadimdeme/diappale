@@ -43,7 +43,13 @@ export default async function CandidatPage() {
               {profile?.ville || "Ville non renseignée"}
             </p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
+            <Link
+              href="/candidat/candidatures"
+              className="rounded-full border border-border px-4 py-2 text-sm font-extrabold"
+            >
+              📩 Mes candidatures
+            </Link>
             <Link
               href="/candidat/cv"
               className="rounded-full border border-border px-4 py-2 text-sm font-extrabold"
@@ -98,7 +104,12 @@ export default async function CandidatPage() {
           Rechercher un emploi
         </h2>
       </div>
-      <JobList offers={offers} candidateId={user.id} />
+      <JobList
+        offers={offers}
+        candidateId={user.id}
+        candidateProfile={candidateProfile}
+        candidateVille={profile?.ville ?? null}
+      />
     </main>
   );
 }

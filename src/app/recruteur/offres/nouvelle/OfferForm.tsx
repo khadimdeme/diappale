@@ -4,6 +4,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { createOffer } from "@/lib/diapale/recruiters";
+import type { ExperienceLevel } from "@/lib/diapale/types";
+
+const TYPES_CONTRAT = ["CDI", "CDD", "Stage", "Alternance", "Mission", "Journalier", "Freelance"];
 
 export default function OfferForm({ recruiterId }: { recruiterId: string }) {
   const [titre, setTitre] = useState("");
@@ -12,6 +15,10 @@ export default function OfferForm({ recruiterId }: { recruiterId: string }) {
   const [description, setDescription] = useState("");
   const [salaire, setSalaire] = useState("");
   const [contactPhone, setContactPhone] = useState("");
+  const [experienceLevel, setExperienceLevel] = useState<ExperienceLevel | "">("");
+  const [niveauEtude, setNiveauEtude] = useState("");
+  const [competencesRecherchees, setCompetencesRecherchees] = useState("");
+  const [showProfil, setShowProfil] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const supabase = createClient();
@@ -29,6 +36,9 @@ export default function OfferForm({ recruiterId }: { recruiterId: string }) {
       description,
       salaire,
       contact_phone: contactPhone,
+      experience_level: experienceLevel,
+      niveau_etude_requis: niveauEtude,
+      competences_requises: competencesRecherchees,
     });
 
     setSaving(false);
@@ -65,10 +75,9 @@ export default function OfferForm({ recruiterId }: { recruiterId: string }) {
           value={typeContrat}
           onChange={(e) => setTypeContrat(e.target.value)}
         >
-          <option>CDI</option>
-          <option>CDD</option>
-          <option>Journalier</option>
-          <option>Stage</option>
+          {TYPES_CONTRAT.map((t) => (
+            <option key={t}>{t}</option>
+          ))}
         </select>
       </Field>
       <Field label="Salaire proposé (FCFA)">
@@ -99,6 +108,53 @@ export default function OfferForm({ recruiterId }: { recruiterId: string }) {
           />
         </Field>
       </div>
+
+      <div className="sm:col-span-2">
+        <button
+          type="button"
+          onClick={() => setShowProfil((s) => !s)}
+          className="text-sm font-bold text-ink underline underline-offset-2"
+        >
+          {showProfil ? "− Masquer" : "+ Préciser le profil recherché"}{" "}
+          <span className="font-normal text-muted">(facultatif)</span>
+        </button>
+      </div>
+
+      {showProfil && (
+        <>
+          <Field label="Niveau d'expérience">
+            <select
+              className="in"
+              value={experienceLevel}
+              onChange={(e) => setExperienceLevel(e.target.value as ExperienceLevel | "")}
+            >
+              <option value="">Peu importe</option>
+              <option value="aucune">Aucune expérience</option>
+              <option value="1-2">1–2 ans</option>
+              <option value="3-5">3–5 ans</option>
+              <option value="5+">5 ans et plus</option>
+            </select>
+          </Field>
+          <Field label="Niveau d'étude">
+            <input
+              className="in"
+              placeholder="Ex : Bac+2, BFEM, pas obligatoire…"
+              value={niveauEtude}
+              onChange={(e) => setNiveauEtude(e.target.value)}
+            />
+          </Field>
+          <div className="sm:col-span-2">
+            <Field label="Compétences recherchées (séparées par des virgules)">
+              <input
+                className="in"
+                placeholder="Ex : Excel, Comptabilité, Permis B"
+                value={competencesRecherchees}
+                onChange={(e) => setCompetencesRecherchees(e.target.value)}
+              />
+            </Field>
+          </div>
+        </>
+      )}
 
       {error && (
         <p className="rounded-lg bg-bloom-bg px-3 py-2 text-sm font-semibold text-bloom sm:col-span-2">
