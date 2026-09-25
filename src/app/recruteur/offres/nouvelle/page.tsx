@@ -16,7 +16,7 @@ export default async function NouvelleOffrePage() {
         <h1 className="font-display text-xl font-bold">
           Publier une offre (formulaire simplifié)
         </h1>
-        <div className="mt-3 flex gap-2.5 rounded-xl border border-border bg-gold-bg p-3.5 text-sm">
+        <div className="mt-3 flex gap-2.5 rounded-xl border border-border bg-surface-2 p-3.5 text-sm">
           <span>🧠</span>
           <p>
             <b>Salaire courant pour un poste similaire à Dakar :</b> variable

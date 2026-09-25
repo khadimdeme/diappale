@@ -71,7 +71,7 @@ export default function CvSection({
           <button
             type="button"
             onClick={handleDelete}
-            className="text-xs font-bold text-bloom"
+            className="text-xs font-bold text-danger"
           >
             Supprimer
           </button>
@@ -99,7 +99,7 @@ export default function CvSection({
         </button>
       </form>
       {error && (
-        <p className="mt-2 rounded-lg bg-bloom-bg px-3 py-2 text-xs font-semibold text-bloom">
+        <p className="mt-2 rounded-lg bg-danger-bg px-3 py-2 text-xs font-semibold text-danger">
           {error}
         </p>
       )}

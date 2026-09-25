@@ -21,7 +21,7 @@ export default async function MesCandidaturesPage() {
       </Link>
 
       <div className="mt-3">
-        <p className="text-xs font-extrabold tracking-wide text-bloom uppercase">
+        <p className="text-xs font-extrabold tracking-wide text-ink uppercase">
           Suivi
         </p>
         <h1 className="font-display text-xl font-bold">📩 Mes candidatures</h1>

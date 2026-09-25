@@ -98,7 +98,7 @@ export default async function CandidatPage() {
 
       <div className="mt-8 flex flex-wrap items-end justify-between gap-2">
         <div>
-          <p className="text-xs font-extrabold tracking-wide text-bloom uppercase">
+          <p className="text-xs font-extrabold tracking-wide text-ink uppercase">
             Offres
           </p>
           <h2 className="mt-1 font-display text-xl font-bold">

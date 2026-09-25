@@ -23,7 +23,7 @@ export default async function EntreprisesPage() {
       </div>
 
       <div className="mt-6">
-        <p className="text-xs font-extrabold tracking-wide text-bloom uppercase">
+        <p className="text-xs font-extrabold tracking-wide text-ink uppercase">
           Découvrir
         </p>
         <h1 className="font-display text-2xl font-bold">Entreprises qui recrutent</h1>

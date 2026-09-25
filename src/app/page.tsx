@@ -61,18 +61,14 @@ export default function Home() {
       </div>
 
       {/* HERO */}
-      <section
-        className="mt-5 overflow-hidden rounded-[28px] px-6 py-11 md:px-9"
-        style={{ background: "#F2B33D", color: "#20160A" }}
-      >
-        <span className="inline-flex w-fit items-center gap-2 rounded-full bg-white/55 px-3.5 py-1.5 text-xs font-extrabold tracking-wide uppercase">
-          <span className="size-1.5 rounded-full bg-[#20160A]" /> Le Sénégal
-          qui travaille
+      <section className="mt-5 overflow-hidden rounded-[28px] border border-border bg-surface px-6 py-11 md:px-9">
+        <span className="inline-flex w-fit items-center gap-2 rounded-full border border-border bg-surface-2 px-3.5 py-1.5 text-xs font-extrabold tracking-wide text-ink uppercase">
+          <span className="size-1.5 rounded-full bg-ink" /> Le Sénégal qui travaille
         </span>
-        <h1 className="mt-4 max-w-[12ch] font-display text-4xl leading-[1.02] font-black tracking-tight md:text-6xl">
+        <h1 className="mt-4 max-w-[12ch] font-display text-4xl leading-[1.02] font-black tracking-tight text-ink md:text-6xl">
           Trouve ta place. Recrute la bonne personne.
         </h1>
-        <p className="mt-4 max-w-[44ch] text-base text-[#3A2A10] md:text-lg">
+        <p className="mt-4 max-w-[44ch] text-base text-muted md:text-lg">
           Diapalé connecte le Sénégal qui travaille — du poste en entreprise
           au métier du quartier — avec des profils complets, un contact
           direct par WhatsApp ou email, et une interface pensée pour la 3G.
@@ -82,7 +78,7 @@ export default function Home() {
             (chip) => (
               <span
                 key={chip}
-                className="rounded-full border border-black/10 bg-white/60 px-3.5 py-1.5 text-xs font-bold"
+                className="rounded-full border border-border bg-surface-2 px-3.5 py-1.5 text-xs font-bold"
               >
                 {chip}
               </span>
@@ -92,36 +88,36 @@ export default function Home() {
         <div className="mt-5 flex flex-wrap gap-3">
           <Link
             href="/compte?role=candidat"
-            className="rounded-full bg-[#20160A] px-5 py-3.5 text-sm font-extrabold text-[#FCEFD6]"
+            className="rounded-full bg-ink px-5 py-3.5 text-sm font-extrabold text-bg"
           >
             Je cherche un emploi
           </Link>
           <Link
             href="/compte?role=recruteur"
-            className="rounded-full bg-white px-5 py-3.5 text-sm font-extrabold text-[#20160A]"
+            className="rounded-full border border-border px-5 py-3.5 text-sm font-extrabold text-ink"
           >
             Je recrute
           </Link>
         </div>
-        <div className="mt-6 flex flex-wrap gap-7 border-t border-black/15 pt-4">
+        <div className="mt-6 flex flex-wrap gap-7 border-t border-border pt-4">
           <div>
-            <b className="block font-display text-xl font-extrabold">Gratuit</b>
-            <span className="text-xs text-[#4A3712]">
+            <b className="block font-display text-xl font-extrabold text-ink">Gratuit</b>
+            <span className="text-xs text-muted">
               pour créer un profil ou publier
             </span>
           </div>
           <div>
-            <b className="block font-display text-xl font-extrabold">
+            <b className="block font-display text-xl font-extrabold text-ink">
               Dakar · Thiès · Touba
             </b>
-            <span className="text-xs text-[#4A3712]">+ 8 régions couvertes</span>
+            <span className="text-xs text-muted">+ 8 régions couvertes</span>
           </div>
         </div>
       </section>
 
       {/* SECTEURS */}
       <div className="mt-9">
-        <p className="text-xs font-extrabold tracking-wide text-bloom uppercase">
+        <p className="text-xs font-extrabold tracking-wide text-ink uppercase">
           Représenté sur la plateforme
         </p>
         <h2 className="mt-1 text-base font-bold text-muted">
@@ -141,7 +137,7 @@ export default function Home() {
 
       {/* COMMENT ÇA MARCHE */}
       <div className="mt-13">
-        <p className="text-xs font-extrabold tracking-wide text-bloom uppercase">
+        <p className="text-xs font-extrabold tracking-wide text-ink uppercase">
           Comment ça marche
         </p>
         <h2 className="mt-1 font-display text-2xl font-bold md:text-3xl">

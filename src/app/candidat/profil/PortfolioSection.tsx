@@ -78,7 +78,7 @@ export default function PortfolioSection({
               <button
                 type="button"
                 onClick={() => handleDelete(item)}
-                className="text-[10px] font-bold text-bloom"
+                className="text-[10px] font-bold text-danger"
               >
                 Supprimer
               </button>
@@ -115,7 +115,7 @@ export default function PortfolioSection({
         </button>
       </form>
       {error && (
-        <p className="mt-2 rounded-lg bg-bloom-bg px-3 py-2 text-xs font-semibold text-bloom">
+        <p className="mt-2 rounded-lg bg-danger-bg px-3 py-2 text-xs font-semibold text-danger">
           {error}
         </p>
       )}

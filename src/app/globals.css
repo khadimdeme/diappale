@@ -1,19 +1,23 @@
 @import "tailwindcss";
 
+/* Une seule couleur de marque (ink), un accent doré utilisé avec parcimonie
+   (badges "vérifié"/"compatible"/boost) — le reste est neutre. Le rouge et
+   le vert restent, mais uniquement comme signaux fonctionnels (erreur,
+   succès), pas comme couleurs de marque. */
 :root {
   --ink: #0e3b39;
   --ink-2: #0b2e2c;
-  --bg: #f3f1ea;
+  --bg: #f5f4f0;
   --surface: #ffffff;
-  --surface-2: #e9e5da;
-  --text: #18231f;
-  --muted: #5e6864;
-  --border: #dedacd;
-  --gold: #e0a020;
+  --surface-2: #ebe9e4;
+  --text: #1a201e;
+  --muted: #62675f;
+  --border: #e1ded5;
+  --gold: #b8860b;
   --gold-deep: #8a5e0e;
-  --gold-bg: #fbebcf;
-  --bloom: #b23158;
-  --bloom-bg: #f8dee6;
+  --gold-bg: #f6ecd3;
+  --danger: #a3372c;
+  --danger-bg: #f7e6e3;
   --good: #1e7a52;
 }
 
@@ -21,17 +25,17 @@
   :root:not([data-theme="light"]) {
     --ink: #7fe0cc;
     --ink-2: #9cebda;
-    --bg: #0b1613;
-    --surface: #132824;
-    --surface-2: #1a332d;
-    --text: #eff5f1;
-    --muted: #a2b3ac;
-    --border: #274038;
-    --gold: #f0b94e;
-    --gold-deep: #f0b94e;
-    --gold-bg: #3a2e14;
-    --bloom: #f084a3;
-    --bloom-bg: #3b1b26;
+    --bg: #0e1412;
+    --surface: #182421;
+    --surface-2: #202e2a;
+    --text: #edf1ee;
+    --muted: #a3aca7;
+    --border: #2c3b36;
+    --gold: #d9ab4e;
+    --gold-deep: #e8bd6c;
+    --gold-bg: #35291a;
+    --danger: #e3948b;
+    --danger-bg: #3a2320;
     --good: #5fd79b;
   }
 }
@@ -39,17 +43,17 @@
 :root[data-theme="dark"] {
   --ink: #7fe0cc;
   --ink-2: #9cebda;
-  --bg: #0b1613;
-  --surface: #132824;
-  --surface-2: #1a332d;
-  --text: #eff5f1;
-  --muted: #a2b3ac;
-  --border: #274038;
-  --gold: #f0b94e;
-  --gold-deep: #f0b94e;
-  --gold-bg: #3a2e14;
-  --bloom: #f084a3;
-  --bloom-bg: #3b1b26;
+  --bg: #0e1412;
+  --surface: #182421;
+  --surface-2: #202e2a;
+  --text: #edf1ee;
+  --muted: #a3aca7;
+  --border: #2c3b36;
+  --gold: #d9ab4e;
+  --gold-deep: #e8bd6c;
+  --gold-bg: #35291a;
+  --danger: #e3948b;
+  --danger-bg: #3a2320;
   --good: #5fd79b;
 }
 
@@ -65,8 +69,8 @@
   --color-gold: var(--gold);
   --color-gold-deep: var(--gold-deep);
   --color-gold-bg: var(--gold-bg);
-  --color-bloom: var(--bloom);
-  --color-bloom-bg: var(--bloom-bg);
+  --color-danger: var(--danger);
+  --color-danger-bg: var(--danger-bg);
   --color-good: var(--good);
   --font-display: var(--font-fraunces);
   --font-sans: var(--font-manrope);

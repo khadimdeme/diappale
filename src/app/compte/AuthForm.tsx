@@ -67,7 +67,7 @@ export default function AuthForm({
 
   if (checkEmail) {
     return (
-      <div className="rounded-2xl border border-border bg-gold-bg p-5 text-sm">
+      <div className="rounded-2xl border border-border bg-surface-2 p-5 text-sm">
         <p className="font-bold">📧 Vérifie ta boîte mail</p>
         <p className="mt-1.5 text-muted">
           On a envoyé un lien de confirmation à <b>{email}</b>. Clique dessus
@@ -85,7 +85,7 @@ export default function AuthForm({
           onClick={() => setRole("candidat")}
           className={`rounded-2xl border-2 p-5 text-left ${
             role === "candidat"
-              ? "border-ink bg-gold-bg"
+              ? "border-ink bg-surface-2"
               : "border-border bg-surface"
           }`}
         >
@@ -102,7 +102,7 @@ export default function AuthForm({
           onClick={() => setRole("recruteur")}
           className={`rounded-2xl border-2 p-5 text-left ${
             role === "recruteur"
-              ? "border-ink bg-gold-bg"
+              ? "border-ink bg-surface-2"
               : "border-border bg-surface"
           }`}
         >
@@ -188,7 +188,7 @@ export default function AuthForm({
         </div>
 
         {error && (
-          <p className="rounded-lg bg-bloom-bg px-3 py-2 text-sm font-semibold text-bloom">
+          <p className="rounded-lg bg-danger-bg px-3 py-2 text-sm font-semibold text-danger">
             {error}
           </p>
         )}

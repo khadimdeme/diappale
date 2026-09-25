@@ -168,7 +168,7 @@ export default function OfferForm({ recruiterId }: { recruiterId: string }) {
       )}
 
       {error && (
-        <p className="rounded-lg bg-bloom-bg px-3 py-2 text-sm font-semibold text-bloom sm:col-span-2">
+        <p className="rounded-lg bg-danger-bg px-3 py-2 text-sm font-semibold text-danger sm:col-span-2">
           {error}
         </p>
       )}

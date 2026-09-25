@@ -88,7 +88,7 @@ export default function ExperienceSection({
               <button
                 type="button"
                 onClick={() => handleDelete(exp.id)}
-                className="text-[11px] font-bold text-bloom"
+                className="text-[11px] font-bold text-danger"
               >
                 Supprimer
               </button>

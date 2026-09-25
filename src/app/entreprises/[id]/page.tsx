@@ -58,7 +58,7 @@ export default async function EntreprisePage({
       </div>
 
       <div className="mt-6">
-        <p className="text-xs font-extrabold tracking-wide text-bloom uppercase">
+        <p className="text-xs font-extrabold tracking-wide text-ink uppercase">
           Offres
         </p>
         <h2 className="font-display text-xl font-bold">
