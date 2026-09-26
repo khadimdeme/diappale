@@ -3,13 +3,13 @@ import { createClient } from "@/lib/supabase/server";
 import { listActiveOffers } from "@/lib/diapale/candidates";
 
 const secteurs = [
-  "🧵 Couture",
-  "🚗 Transport",
-  "🏗️ Bâtiment",
-  "💻 Tech",
-  "🍽️ Restauration",
-  "🧹 Ménage & domicile",
-  "🛒 Vente & commerce",
+  "Couture",
+  "Transport",
+  "Bâtiment",
+  "Tech",
+  "Restauration",
+  "Ménage & domicile",
+  "Vente & commerce",
 ];
 
 const etapes = [
@@ -85,7 +85,7 @@ export default async function Home() {
           direct par WhatsApp ou email, et une interface pensée pour la 3G.
         </p>
         <div className="mt-5 flex flex-wrap gap-2">
-          {["📄 Profil en 5 min", "💬 Contact direct", "⭐ Visibilité boostée"].map(
+          {["Profil en 5 min", "Contact direct", "Visibilité boostée"].map(
             (chip) => (
               <span
                 key={chip}
@@ -157,7 +157,7 @@ export default async function Home() {
           >
             <h4 className="font-display text-base font-semibold">{o.titre}</h4>
             <div className="mt-1 flex flex-wrap gap-2.5 text-xs text-muted">
-              <span>📍 {o.ville}</span>
+              <span>{o.ville}</span>
               {o.type_contrat && <span>{o.type_contrat}</span>}
             </div>
             {o.salaire && (

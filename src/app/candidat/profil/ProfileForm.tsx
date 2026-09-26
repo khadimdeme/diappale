@@ -139,7 +139,7 @@ export default function ProfileForm({
         </button>
         {saved && (
           <span className="ml-3 text-sm font-semibold text-good">
-            ✔ Enregistré
+            Enregistré
           </span>
         )}
       </div>

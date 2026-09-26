@@ -24,7 +24,7 @@ export default async function MesCandidaturesPage() {
         <p className="text-xs font-extrabold tracking-wide text-ink uppercase">
           Suivi
         </p>
-        <h1 className="font-display text-xl font-bold">📩 Mes candidatures</h1>
+        <h1 className="font-display text-xl font-bold">Mes candidatures</h1>
       </div>
 
       <div className="mt-4 grid gap-3">
@@ -37,10 +37,13 @@ export default async function MesCandidaturesPage() {
           <div key={app.offerId} className="rounded-2xl border border-border bg-surface p-4">
             <h4 className="font-display text-base font-semibold">{app.offer.titre}</h4>
             <p className="text-xs text-muted">
-              {app.companyName || "Entreprise"} · 📍 {app.offer.ville}
+              {app.companyName || "Entreprise"} · {app.offer.ville}
             </p>
             <div className="mt-2.5 flex items-center gap-2">
-              <span className="text-base">{STATUS_DOT[app.status]}</span>
+              <span
+                className="size-2 rounded-full"
+                style={{ background: STATUS_DOT[app.status] }}
+              />
               <span className="text-sm font-bold">{STATUS_LABEL[app.status]}</span>
             </div>
             <p className="mt-1 text-[11px] text-muted">

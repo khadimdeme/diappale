@@ -71,7 +71,7 @@ export default async function CvPage() {
           </div>
           {candidateProfile?.cni_verified && (
             <span className="rounded-full bg-gold-bg px-3 py-1.5 text-xs font-extrabold text-gold-deep">
-              ✔ Identité vérifiée
+              Identité vérifiée
             </span>
           )}
         </div>

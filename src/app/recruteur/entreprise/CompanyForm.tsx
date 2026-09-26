@@ -60,7 +60,7 @@ export default function CompanyForm({
         <button type="submit" disabled={saving} className="rounded-full bg-ink px-5 py-3 text-sm font-extrabold text-bg disabled:opacity-60">
           {saving ? "Enregistrement…" : "Enregistrer"}
         </button>
-        {saved && <span className="ml-3 text-sm font-semibold text-good">✔ Enregistré</span>}
+        {saved && <span className="ml-3 text-sm font-semibold text-good">Enregistré</span>}
       </div>
 
       <style jsx>{`

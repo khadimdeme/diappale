@@ -70,7 +70,7 @@ export default function AuthForm({
   if (checkEmail) {
     return (
       <div className="rounded-2xl border border-border bg-surface-2 p-5 text-sm">
-        <p className="font-bold">📧 Vérifie ta boîte mail</p>
+        <p className="font-bold">Vérifie ta boîte mail</p>
         <p className="mt-1.5 text-muted">
           On a envoyé un lien de confirmation à <b>{email}</b>. Clique dessus
           pour activer ton compte {roleLabel === "Je recrute" ? "recruteur" : "candidat"}.
@@ -91,8 +91,7 @@ export default function AuthForm({
               : "border-border bg-surface"
           }`}
         >
-          <div className="text-2xl">🔍</div>
-          <h4 className="mt-2 font-display text-base font-bold">
+          <h4 className="font-display text-base font-bold">
             Je cherche un emploi
           </h4>
           <p className="mt-1 text-xs text-muted">
@@ -108,8 +107,7 @@ export default function AuthForm({
               : "border-border bg-surface"
           }`}
         >
-          <div className="text-2xl">🏢</div>
-          <h4 className="mt-2 font-display text-base font-bold">
+          <h4 className="font-display text-base font-bold">
             Je recrute
           </h4>
           <p className="mt-1 text-xs text-muted">

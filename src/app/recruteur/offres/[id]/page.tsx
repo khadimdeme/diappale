@@ -34,7 +34,7 @@ export default async function OffreCandidatsPage({
       <div className="mt-3 rounded-2xl border border-border bg-surface p-5">
         <p className="text-xs font-extrabold text-muted uppercase">Offre</p>
         <h1 className="font-display text-xl font-bold">{offer.titre}</h1>
-        <p className="text-sm text-muted">📍 {offer.ville}</p>
+        <p className="text-sm text-muted">{offer.ville}</p>
       </div>
 
       <div className="mt-6 grid gap-3">
@@ -51,11 +51,11 @@ export default async function OffreCandidatsPage({
                 <div>
                   <div className="flex flex-wrap items-center gap-1.5">
                     <span className="inline-block rounded-lg bg-good/10 px-2.5 py-1 text-xs font-bold text-good">
-                      {interestType === "postule" ? "✅ A postulé" : "👀 A consulté"}
+                      {interestType === "postule" ? "A postulé" : "A consulté"}
                     </span>
                     {score >= 40 && (
                       <span className="inline-block rounded-lg bg-gold-bg px-2.5 py-1 text-xs font-extrabold text-gold-deep">
-                        ✨ {score}% compatible
+                        {score}% compatible
                       </span>
                     )}
                   </div>
@@ -64,7 +64,7 @@ export default async function OffreCandidatsPage({
                   </h4>
                   <p className="text-xs text-muted">
                     {candidateProfile?.metier || "Métier non renseigné"} · {profile.ville}
-                    {candidateProfile?.cni_verified ? " · ✔ Identité vérifiée" : ""}
+                    {candidateProfile?.cni_verified ? " · Identité vérifiée" : ""}
                   </p>
                   {candidateProfile?.competences?.length ? (
                     <div className="mt-2 flex flex-wrap gap-1.5">
@@ -107,7 +107,7 @@ export default async function OffreCandidatsPage({
                       target="_blank"
                       className="rounded-[9px] border border-border bg-surface px-3.5 py-2.5 text-xs font-bold"
                     >
-                      📄 Voir le CV
+                      Voir le CV
                     </a>
                   )}
                   {profile.phone && (

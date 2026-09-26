@@ -48,13 +48,13 @@ export default async function CandidatPage() {
               href="/candidat/candidatures"
               className="rounded-full border border-border px-4 py-2 text-sm font-extrabold"
             >
-              📩 Mes candidatures
+              Mes candidatures
             </Link>
             <Link
               href="/candidat/cv"
               className="rounded-full border border-border px-4 py-2 text-sm font-extrabold"
             >
-              📄 Voir mon CV
+              Voir mon CV
             </Link>
             <Link
               href="/candidat/profil"
@@ -66,7 +66,7 @@ export default async function CandidatPage() {
         </div>
         <div className="mt-4 rounded-xl border border-border bg-surface-2 p-3.5">
           <div className="flex items-center justify-between text-xs font-extrabold">
-            <span>🧠 Profil complété à {Math.round((completeness / 4) * 100)}%</span>
+            <span>Profil complété à {Math.round((completeness / 4) * 100)}%</span>
           </div>
           <div className="mt-2 h-1.5 rounded-full bg-border">
             <div
@@ -106,7 +106,7 @@ export default async function CandidatPage() {
           </h2>
         </div>
         <Link href="/entreprises" className="text-sm font-bold text-ink underline underline-offset-2">
-          🏢 Découvrir les entreprises
+          Découvrir les entreprises
         </Link>
       </div>
       <JobList

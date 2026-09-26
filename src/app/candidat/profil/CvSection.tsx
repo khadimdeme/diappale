@@ -19,8 +19,6 @@ export default function CvSection({
   const supabase = createClient();
   const router = useRouter();
 
-  const isPdf = cvUrl?.toLowerCase().endsWith(".pdf");
-
   async function handleUpload(e: React.FormEvent) {
     e.preventDefault();
     if (!file) return;
@@ -66,7 +64,7 @@ export default function CvSection({
             target="_blank"
             className="flex items-center gap-2 text-sm font-bold text-ink underline underline-offset-2"
           >
-            {isPdf ? "📄" : "🖼️"} Voir mon CV actuel
+            Voir mon CV actuel
           </a>
           <button
             type="button"

@@ -10,12 +10,12 @@ export const STATUS_LABEL: Record<InterestStatus, string> = {
 };
 
 export const STATUS_DOT: Record<InterestStatus, string> = {
-  nouveau: "🟡",
-  vue: "🔵",
-  preselectionne: "🟣",
-  entretien: "🟢",
-  accepte: "✅",
-  refuse: "⚪",
+  nouveau: "#b8860b",
+  vue: "#2f6fb8",
+  preselectionne: "#7c3fb8",
+  entretien: "#2f8f3a",
+  accepte: "#1e7a52",
+  refuse: "#9a9a92",
 };
 
 export const STATUS_ORDER: InterestStatus[] = [

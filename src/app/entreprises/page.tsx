@@ -51,7 +51,7 @@ export default async function EntreprisesPage() {
               <h4 className="font-display text-base font-semibold">{c.company_name}</h4>
               <p className="text-xs text-muted">
                 {c.secteur || "Secteur non renseigné"}
-                {c.ville ? ` · 📍 ${c.ville}` : ""}
+                {c.ville ? ` · ${c.ville}` : ""}
               </p>
             </div>
           </Link>

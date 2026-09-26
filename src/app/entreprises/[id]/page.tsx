@@ -30,7 +30,7 @@ export default async function EntreprisePage({
             <h1 className="font-display text-xl font-bold">{company.company_name}</h1>
             <p className="text-sm text-muted">
               {company.secteur || "Secteur non renseigné"}
-              {company.ville ? ` · 📍 ${company.ville}` : ""}
+              {company.ville ? ` · ${company.ville}` : ""}
             </p>
           </div>
         </div>
@@ -76,7 +76,7 @@ export default async function EntreprisePage({
           <div key={o.id} className="rounded-2xl border border-border bg-surface p-4">
             <h4 className="font-display text-base font-semibold">{o.titre}</h4>
             <p className="text-xs text-muted">
-              📍 {o.ville} {o.type_contrat && `· ${o.type_contrat}`}
+              {o.ville} {o.type_contrat && `· ${o.type_contrat}`}
             </p>
             {o.salaire && <p className="mt-1 font-display text-sm font-semibold">{o.salaire}</p>}
           </div>

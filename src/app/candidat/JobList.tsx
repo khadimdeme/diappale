@@ -94,14 +94,14 @@ export default function JobList({
                     {o.titre}
                   </Link>
                   <div className="mt-1 flex flex-wrap gap-2.5 text-xs text-muted">
-                    <span>📍 {o.ville}</span>
+                    <span>{o.ville}</span>
                     {o.secteur && <span>{o.secteur}</span>}
                     {o.type_contrat && <span>{o.type_contrat}</span>}
                   </div>
                 </div>
                 {candidateProfile?.metier && score >= 40 && (
                   <span className="whitespace-nowrap rounded-full bg-gold-bg px-2.5 py-1 text-xs font-extrabold text-gold-deep">
-                    ✨ {score}% compatible
+                    {score}% compatible
                   </span>
                 )}
               </div>

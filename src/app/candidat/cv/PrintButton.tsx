@@ -6,7 +6,7 @@ export default function PrintButton() {
       onClick={() => window.print()}
       className="rounded-full bg-ink px-4 py-2 text-sm font-extrabold text-bg"
     >
-      📄 Enregistrer en PDF
+      Enregistrer en PDF
     </button>
   );
 }

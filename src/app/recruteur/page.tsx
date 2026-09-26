@@ -39,13 +39,13 @@ export default async function RecruteurPage() {
             href="/recruteur/entreprise"
             className="rounded-full border border-border px-4 py-2 text-sm font-extrabold"
           >
-            🏢 Modifier l&apos;entreprise
+            Modifier l&apos;entreprise
           </Link>
           <Link
             href="/recruteur/offres/nouvelle"
             className="rounded-full bg-ink px-4 py-2 text-sm font-extrabold text-bg"
           >
-            📝 Publier une offre
+            Publier une offre
           </Link>
         </div>
       </div>
@@ -88,7 +88,7 @@ export default async function RecruteurPage() {
               <h4 className="font-display text-base font-semibold">
                 {o.titre}
               </h4>
-              <p className="text-xs text-muted">📍 {o.ville}</p>
+              <p className="text-xs text-muted">{o.ville}</p>
             </div>
             <span className="rounded-full bg-surface-2 px-3 py-1.5 text-xs font-extrabold text-ink">
               {interestCounts[o.id] ?? 0} candidat(s)

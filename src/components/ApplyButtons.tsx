@@ -65,7 +65,7 @@ export default function ApplyButtons({
         disabled={applied}
         className="rounded-[9px] bg-[#25D366] px-3.5 py-2.5 text-xs font-bold text-[#06210f] disabled:opacity-60"
       >
-        {applied ? "✅ Candidature envoyée" : "💬 Postuler via WhatsApp"}
+        {applied ? "Candidature envoyée" : "💬 Postuler via WhatsApp"}
       </button>
       {offer.contact_email && (
         <button
@@ -73,7 +73,7 @@ export default function ApplyButtons({
           disabled={applied}
           className="rounded-[9px] border border-border bg-surface px-3.5 py-2.5 text-xs font-bold disabled:opacity-60"
         >
-          📧 Postuler par email
+          Postuler par email
         </button>
       )}
     </div>

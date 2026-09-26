@@ -61,7 +61,7 @@ export default async function OffreDetailPage({
 
       <div className="mt-3 rounded-2xl border border-border bg-surface p-6">
         <div className="flex flex-wrap gap-2.5 text-xs text-muted">
-          <span>📍 {offer.ville}</span>
+          <span>{offer.ville}</span>
           {offer.secteur && <span>{offer.secteur}</span>}
           {offer.type_contrat && <span>{offer.type_contrat}</span>}
         </div>
@@ -71,7 +71,7 @@ export default async function OffreDetailPage({
             href={`/entreprises/${company.id}`}
             className="mt-1 inline-block text-sm font-bold text-ink underline underline-offset-2"
           >
-            🏢 {company.company_name}
+            {company.company_name}
           </Link>
         )}
         {offer.salaire && (
@@ -108,12 +108,12 @@ export default async function OffreDetailPage({
               )}
               {offer.niveau_etude_requis && (
                 <span className="rounded-full bg-surface-2 px-3 py-1.5 text-xs font-bold">
-                  🎓 {offer.niveau_etude_requis}
+                  {offer.niveau_etude_requis}
                 </span>
               )}
               {offer.competences_requises?.length > 0 && (
                 <span className="rounded-full bg-surface-2 px-3 py-1.5 text-xs font-bold">
-                  🛠️ {offer.competences_requises.join(", ")}
+                  {offer.competences_requises.join(", ")}
                 </span>
               )}
             </div>
