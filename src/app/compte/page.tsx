@@ -24,8 +24,7 @@ export default async function ComptePage({
           Le rôle se choisit avant tout formulaire
         </h1>
         <p className="mt-2 max-w-lg text-sm text-muted">
-          Un même écran pour créer un compte ou se connecter — comme sur
-          Malt ou Fuzu.
+          Un même écran pour créer un compte ou se connecter.
         </p>
         <div className="mt-6">
           <AuthForm initialRole={initialRole} initialMode={initialMode} next={next} />
