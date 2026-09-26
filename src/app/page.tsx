@@ -235,8 +235,16 @@ export default async function Home() {
         </div>
       </div>
 
-      <footer className="mb-8 flex flex-wrap justify-between gap-3 border-t border-border pt-5 text-xs text-muted">
+      <footer className="mb-8 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-5 text-xs text-muted">
         <span>Diapalé — plateforme de recrutement pour le Sénégal.</span>
+        <div className="flex flex-wrap gap-4">
+          <Link href="/confidentialite" className="hover:text-text">
+            Confidentialité
+          </Link>
+          <Link href="/cgu" className="hover:text-text">
+            Conditions d&apos;utilisation
+          </Link>
+        </div>
         <span>🇸🇳</span>
       </footer>
     </main>
