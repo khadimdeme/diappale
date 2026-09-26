@@ -1,10 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { createClient } from "@/lib/supabase/client";
-import { markInterest } from "@/lib/diapale/candidates";
+import Link from "next/link";
 import { computeMatchScore } from "@/lib/diapale/matching";
-import { buildApplicationMessage } from "@/lib/diapale/applicationMessage";
+import ApplyButtons from "@/components/ApplyButtons";
 import type { CandidateProfile, JobOffer } from "@/lib/diapale/types";
 
 const TYPES_CONTRAT = ["CDI", "CDD", "Stage", "Alternance", "Mission", "Journalier", "Freelance"];
@@ -25,8 +24,6 @@ export default function JobList({
   const [q, setQ] = useState("");
   const [ville, setVille] = useState("");
   const [typeContrat, setTypeContrat] = useState("");
-  const [applied, setApplied] = useState<Record<string, boolean>>({});
-  const supabase = createClient();
 
   const villes = useMemo(
     () => Array.from(new Set(offers.map((o) => o.ville))).sort(),
@@ -39,34 +36,6 @@ export default function JobList({
       (!ville || o.ville === ville) &&
       (!typeContrat || o.type_contrat === typeContrat)
   );
-
-  async function postuler(offer: JobOffer, channel: "whatsapp" | "email") {
-    await markInterest(supabase, {
-      offerId: offer.id,
-      candidateId,
-      type: "postule",
-    });
-    setApplied((a) => ({ ...a, [offer.id]: true }));
-
-    const message = buildApplicationMessage({
-      offerTitre: offer.titre,
-      candidateName,
-      candidateProfile,
-    });
-
-    if (channel === "whatsapp" && offer.contact_phone) {
-      window.open(
-        `https://wa.me/${offer.contact_phone.replace(/\D/g, "")}?text=${encodeURIComponent(message)}`,
-        "_blank"
-      );
-    } else if (channel === "email" && offer.contact_email) {
-      const subject = encodeURIComponent(`Candidature — ${offer.titre} (via Diapalé)`);
-      window.open(
-        `mailto:${offer.contact_email}?subject=${subject}&body=${encodeURIComponent(message)}`,
-        "_blank"
-      );
-    }
-  }
 
   return (
     <div className="mt-4 rounded-2xl border border-border bg-surface p-5">
@@ -118,9 +87,12 @@ export default function JobList({
             >
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <h4 className="font-display text-base font-semibold">
+                  <Link
+                    href={`/offres/${o.id}`}
+                    className="font-display text-base font-semibold hover:underline"
+                  >
                     {o.titre}
-                  </h4>
+                  </Link>
                   <div className="mt-1 flex flex-wrap gap-2.5 text-xs text-muted">
                     <span>📍 {o.ville}</span>
                     {o.secteur && <span>{o.secteur}</span>}
@@ -133,29 +105,27 @@ export default function JobList({
                   </span>
                 )}
               </div>
+              {o.description && (
+                <p className="line-clamp-2 text-sm text-muted">{o.description}</p>
+              )}
               {o.salaire && (
                 <div className="font-display text-sm font-semibold">
                   {o.salaire}
                 </div>
               )}
-              <div className="mt-1 flex flex-wrap gap-2">
-                <button
-                  onClick={() => postuler(o, "whatsapp")}
-                  disabled={applied[o.id]}
-                  className="rounded-[9px] bg-[#25D366] px-3.5 py-2.5 text-xs font-bold text-[#06210f] disabled:opacity-60"
-                >
-                  {applied[o.id] ? "✅ Candidature envoyée" : "💬 Postuler via WhatsApp"}
-                </button>
-                {o.contact_email && (
-                  <button
-                    onClick={() => postuler(o, "email")}
-                    disabled={applied[o.id]}
-                    className="rounded-[9px] border border-border bg-surface px-3.5 py-2.5 text-xs font-bold disabled:opacity-60"
-                  >
-                    📧 Postuler par email
-                  </button>
-                )}
-              </div>
+              <ApplyButtons
+                offer={o}
+                candidateId={candidateId}
+                candidateProfile={candidateProfile}
+                candidateName={candidateName}
+                loginHref={`/compte?mode=login&role=candidat&next=${encodeURIComponent(`/offres/${o.id}`)}`}
+              />
+              <Link
+                href={`/offres/${o.id}`}
+                className="w-fit text-xs font-bold text-ink underline underline-offset-2"
+              >
+                Voir les détails →
+              </Link>
             </div>
           );
         })}

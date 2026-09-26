@@ -4,11 +4,12 @@ import AuthForm from "./AuthForm";
 export default async function ComptePage({
   searchParams,
 }: {
-  searchParams: Promise<{ role?: string; mode?: string }>;
+  searchParams: Promise<{ role?: string; mode?: string; next?: string }>;
 }) {
   const params = await searchParams;
   const initialRole = params.role === "recruteur" ? "recruteur" : "candidat";
   const initialMode = params.mode === "login" ? "login" : "signup";
+  const next = params.next && params.next.startsWith("/") ? params.next : undefined;
 
   return (
     <main className="mx-auto w-full max-w-3xl px-5 py-10">
@@ -27,7 +28,7 @@ export default async function ComptePage({
           Malt ou Fuzu.
         </p>
         <div className="mt-6">
-          <AuthForm initialRole={initialRole} initialMode={initialMode} />
+          <AuthForm initialRole={initialRole} initialMode={initialMode} next={next} />
         </div>
       </div>
     </main>

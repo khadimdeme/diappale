@@ -1,12 +1,13 @@
 @import "tailwindcss";
 
-/* Une seule couleur de marque (ink), un accent doré utilisé avec parcimonie
-   (badges "vérifié"/"compatible"/boost) — le reste est neutre. Le rouge et
-   le vert restent, mais uniquement comme signaux fonctionnels (erreur,
-   succès), pas comme couleurs de marque. */
+/* Une seule couleur de marque (ink, un vert), un accent doré utilisé avec
+   parcimonie (badges "vérifié"/"compatible"/boost) — le reste est neutre.
+   Le rouge et le vert "good" restent, mais uniquement comme signaux
+   fonctionnels (erreur, succès), pas comme couleurs de marque. */
 :root {
-  --ink: #0e3b39;
-  --ink-2: #0b2e2c;
+  /* Vert direct, façon Alo Region — pas d'invention de nuance maison. */
+  --ink: #2fa97c;
+  --ink-2: #1f8c63;
   --bg: #f5f4f0;
   --surface: #ffffff;
   --surface-2: #ebe9e4;
@@ -18,13 +19,13 @@
   --gold-bg: #f6ecd3;
   --danger: #a3372c;
   --danger-bg: #f7e6e3;
-  --good: #1e7a52;
+  --good: #4a7c52;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --ink: #7fe0cc;
-    --ink-2: #9cebda;
+    --ink: #59d9a6;
+    --ink-2: #3ec28f;
     --bg: #0e1412;
     --surface: #182421;
     --surface-2: #202e2a;
@@ -36,13 +37,13 @@
     --gold-bg: #35291a;
     --danger: #e3948b;
     --danger-bg: #3a2320;
-    --good: #5fd79b;
+    --good: #8fbd93;
   }
 }
 
 :root[data-theme="dark"] {
-  --ink: #7fe0cc;
-  --ink-2: #9cebda;
+  --ink: #59d9a6;
+  --ink-2: #3ec28f;
   --bg: #0e1412;
   --surface: #182421;
   --surface-2: #202e2a;
@@ -54,7 +55,7 @@
   --gold-bg: #35291a;
   --danger: #e3948b;
   --danger-bg: #3a2320;
-  --good: #5fd79b;
+  --good: #8fbd93;
 }
 
 @theme inline {

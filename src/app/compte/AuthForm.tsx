@@ -11,9 +11,11 @@ type Mode = "signup" | "login";
 export default function AuthForm({
   initialRole,
   initialMode,
+  next,
 }: {
   initialRole: Role;
   initialMode: Mode;
+  next?: string;
 }) {
   const [role, setRole] = useState<Role>(initialRole);
   const [mode, setMode] = useState<Mode>(initialMode);
@@ -31,7 +33,7 @@ export default function AuthForm({
   async function handleGoogle() {
     setError(null);
     setGoogleLoading(true);
-    const { error } = await signInWithGoogle(supabase, role);
+    const { error } = await signInWithGoogle(supabase, role, next);
     if (error) {
       setGoogleLoading(false);
       setError(error.message);
@@ -46,7 +48,7 @@ export default function AuthForm({
     setLoading(true);
 
     if (mode === "signup") {
-      const { data, error } = await signUp(supabase, { email, password, role });
+      const { data, error } = await signUp(supabase, { email, password, role, next });
       setLoading(false);
       if (error) return setError(error.message);
       if (!data.session) {
@@ -54,13 +56,13 @@ export default function AuthForm({
         setCheckEmail(true);
         return;
       }
-      router.push("/tableau-de-bord");
+      router.push(next || "/tableau-de-bord");
       router.refresh();
     } else {
       const { error } = await signIn(supabase, { email, password });
       setLoading(false);
       if (error) return setError(error.message);
-      router.push("/tableau-de-bord");
+      router.push(next || "/tableau-de-bord");
       router.refresh();
     }
   }

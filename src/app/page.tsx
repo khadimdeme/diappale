@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
+import { listActiveOffers } from "@/lib/diapale/candidates";
 
 const secteurs = [
   "🧵 Couture",
@@ -31,28 +33,37 @@ const etapes = [
   },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const supabase = await createClient();
+  const offers = (await listActiveOffers(supabase)).slice(0, 4);
+
   return (
     <main className="mx-auto w-full max-w-5xl px-5">
       {/* NAV */}
       <div className="pt-4">
-        <div className="flex items-center justify-between rounded-full border border-border bg-surface px-4 py-2.5 shadow-sm">
-          <div className="flex items-center gap-2.5">
-            <div className="flex size-8 items-center justify-center rounded-[9px] bg-ink-2 font-display text-base font-bold text-white">
+        <div className="flex items-center justify-between gap-2 rounded-full border border-border bg-surface px-4 py-2.5 shadow-sm">
+          <div className="flex min-w-0 items-center gap-2.5">
+            <div className="flex size-8 shrink-0 items-center justify-center rounded-[9px] bg-ink-2 font-display text-base font-bold text-white">
               D
             </div>
-            <span className="font-display text-lg font-bold">Diapalé</span>
+            <span className="truncate font-display text-lg font-bold">Diapalé</span>
           </div>
-          <div className="flex gap-3 text-sm font-bold">
+          <div className="flex shrink-0 items-center gap-1 text-sm font-bold sm:gap-3">
+            <Link
+              href="/offres"
+              className="hidden rounded-full px-3 py-1.5 text-muted hover:text-text sm:inline-block"
+            >
+              Voir les offres
+            </Link>
             <Link
               href="/compte?mode=login"
-              className="rounded-full px-3 py-1.5 text-muted hover:text-text"
+              className="hidden rounded-full px-3 py-1.5 text-muted hover:text-text sm:inline-block"
             >
               Se connecter
             </Link>
             <Link
               href="/compte"
-              className="rounded-full bg-ink px-4 py-1.5 text-bg"
+              className="whitespace-nowrap rounded-full bg-ink px-4 py-1.5 text-bg"
             >
               Créer un compte
             </Link>
@@ -114,6 +125,47 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* OFFRES EN DIRECT */}
+      <div className="mt-9 flex flex-wrap items-end justify-between gap-2">
+        <div>
+          <p className="text-xs font-extrabold tracking-wide text-ink uppercase">
+            En ce moment
+          </p>
+          <h2 className="mt-1 font-display text-2xl font-bold md:text-3xl">
+            Des offres à parcourir dès maintenant
+          </h2>
+        </div>
+        <Link
+          href="/offres"
+          className="text-sm font-bold text-ink underline underline-offset-2"
+        >
+          Voir toutes les offres →
+        </Link>
+      </div>
+      <div className="mt-4 grid gap-3 md:grid-cols-2">
+        {offers.length === 0 && (
+          <div className="rounded-2xl border border-border bg-surface-2 p-5 text-sm text-muted md:col-span-2">
+            Pas encore d&apos;offre publiée — reviens bientôt.
+          </div>
+        )}
+        {offers.map((o) => (
+          <Link
+            key={o.id}
+            href={`/offres/${o.id}`}
+            className="rounded-2xl border border-border bg-surface p-4 hover:border-ink"
+          >
+            <h4 className="font-display text-base font-semibold">{o.titre}</h4>
+            <div className="mt-1 flex flex-wrap gap-2.5 text-xs text-muted">
+              <span>📍 {o.ville}</span>
+              {o.type_contrat && <span>{o.type_contrat}</span>}
+            </div>
+            {o.salaire && (
+              <div className="mt-1.5 text-sm font-semibold">{o.salaire}</div>
+            )}
+          </Link>
+        ))}
+      </div>
 
       {/* SECTEURS */}
       <div className="mt-9">

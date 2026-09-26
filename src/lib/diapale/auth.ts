@@ -8,8 +8,12 @@ import type { Role } from "./types";
 
 export async function signUp(
   supabase: SupabaseClient,
-  { email, password, role }: { email: string; password: string; role: Role }
+  { email, password, role, next }: { email: string; password: string; role: Role; next?: string }
 ) {
+  const params = new URLSearchParams();
+  if (next) params.set("next", next);
+  const query = params.toString();
+
   return supabase.auth.signUp({
     email,
     password,
@@ -17,7 +21,7 @@ export async function signUp(
       data: { role },
       // Le lien dans l'email de confirmation ramène ici — cette route
       // échange le code contre une session, puis renvoie vers le site.
-      emailRedirectTo: `${window.location.origin}/auth/callback`,
+      emailRedirectTo: `${window.location.origin}/auth/callback${query ? `?${query}` : ""}`,
     },
   });
 }
@@ -35,11 +39,13 @@ export async function signIn(
  * propres métadonnées comme un signUp classique — /auth/callback s'en
  * sert pour finir de configurer le profil (candidat ou recruteur).
  */
-export async function signInWithGoogle(supabase: SupabaseClient, role: Role) {
+export async function signInWithGoogle(supabase: SupabaseClient, role: Role, next?: string) {
+  const params = new URLSearchParams({ role });
+  if (next) params.set("next", next);
   return supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: `${window.location.origin}/auth/callback?role=${role}`,
+      redirectTo: `${window.location.origin}/auth/callback?${params.toString()}`,
     },
   });
 }

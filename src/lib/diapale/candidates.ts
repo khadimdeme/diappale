@@ -91,6 +91,17 @@ export async function listActiveOffers(supabase: SupabaseClient) {
   return (data ?? []) as JobOffer[];
 }
 
+/** Détail d'une offre, accessible sans compte (comme sur Indeed). */
+export async function getPublicOffer(supabase: SupabaseClient, offerId: string) {
+  const { data } = await supabase
+    .from("job_offers")
+    .select(OFFER_COLUMNS)
+    .eq("id", offerId)
+    .eq("is_active", true)
+    .single();
+  return data as JobOffer | null;
+}
+
 /** Enregistre l'intérêt du candidat pour une offre (vue ou candidature). */
 export async function markInterest(
   supabase: SupabaseClient,

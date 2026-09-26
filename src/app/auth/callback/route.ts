@@ -10,6 +10,9 @@ export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
   const role = searchParams.get("role") as Role | null;
+  const next = searchParams.get("next");
+  // On ne redirige que vers un chemin interne, jamais vers une URL externe.
+  const safeNext = next && next.startsWith("/") ? next : null;
 
   if (code) {
     const supabase = await createClient();
@@ -22,7 +25,7 @@ export async function GET(request: Request) {
         role,
         data.user.user_metadata?.full_name ?? data.user.user_metadata?.name
       );
-      return NextResponse.redirect(`${origin}/tableau-de-bord`);
+      return NextResponse.redirect(`${origin}${safeNext || "/tableau-de-bord"}`);
     }
   }
 
