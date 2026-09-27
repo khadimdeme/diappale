@@ -15,21 +15,21 @@ const secteurs = [
 const etapes = [
   {
     num: "01",
-    titre: "On crée un profil en 5 min",
+    titre: "Crée ton profil en 5 minutes",
     texte:
-      "Email + mot de passe (gratuit), numéro de téléphone ajouté ensuite pour le contact WhatsApp — le CV se génère tout seul, avec ou sans photos de réalisations.",
+      "Email et mot de passe suffisent, c'est gratuit. Ton numéro de téléphone est ajouté ensuite pour le contact WhatsApp, et ton CV se génère tout seul.",
   },
   {
     num: "02",
-    titre: "Le recruteur publie, le candidat postule",
+    titre: "Postule librement, le recruteur doit publier",
     texte:
-      "Le recruteur doit publier une annonce pour recevoir des candidats — pas de fouille gratuite dans les profils. Le candidat, lui, filtre et postule librement.",
+      "Tu filtres et postules aux offres qui t'intéressent. De leur côté, les recruteurs doivent publier une vraie offre pour recevoir des candidatures — pas de fouille libre dans les profils.",
   },
   {
     num: "03",
-    titre: "Alerte, puis contact direct",
+    titre: "Une alerte, puis un contact direct",
     texte:
-      "Dès qu'un candidat postule ou consulte l'offre, le recruteur est alerté et voit son profil complet — WhatsApp ou email, tout de suite.",
+      "Dès que tu postules ou consultes une offre, le recruteur est prévenu et voit ton profil complet — il te contacte directement par WhatsApp ou email.",
   },
 ];
 
@@ -82,7 +82,8 @@ export default async function Home() {
         <p className="mt-4 max-w-[44ch] text-base text-muted md:text-lg">
           Diapalé connecte le Sénégal qui travaille — du poste en entreprise
           au métier du quartier — avec des profils complets, un contact
-          direct par WhatsApp ou email, et une interface pensée pour la 3G.
+          direct par WhatsApp ou email, et une interface qui reste rapide
+          même avec une connexion lente.
         </p>
         <div className="mt-5 flex flex-wrap gap-2">
           {["Profil en 5 min", "Contact direct", "Visibilité boostée"].map(
@@ -193,7 +194,7 @@ export default async function Home() {
           Comment ça marche
         </p>
         <h2 className="mt-1 font-display text-2xl font-bold md:text-3xl">
-          Trois étapes, sans jargon
+          Trois étapes pour commencer
         </h2>
       </div>
       <div className="mt-5 grid gap-4 md:grid-cols-3">
