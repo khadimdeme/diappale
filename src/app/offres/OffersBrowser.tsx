@@ -2,9 +2,17 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { computeMatchScore } from "@/lib/diapale/matching";
 import ApplyButtons from "@/components/ApplyButtons";
 import type { CandidateProfile, JobOffer } from "@/lib/diapale/types";
+
+const OffersMap = dynamic(() => import("./OffersMap"), {
+  ssr: false,
+  loading: () => (
+    <div className="mt-4 h-[420px] w-full animate-pulse rounded-2xl border border-border bg-surface-2" />
+  ),
+});
 
 const TYPES_CONTRAT = ["CDI", "CDD", "Stage", "Alternance", "Mission", "Journalier", "Freelance"];
 
@@ -25,6 +33,7 @@ export default function OffersBrowser({
   const [q, setQ] = useState("");
   const [ville, setVille] = useState("");
   const [typeContrat, setTypeContrat] = useState("");
+  const [view, setView] = useState<"liste" | "carte">("liste");
 
   const villes = useMemo(
     () => Array.from(new Set(offers.map((o) => o.ville))).sort(),
@@ -73,7 +82,24 @@ export default function OffersBrowser({
         </select>
       </div>
 
-      <div className="mt-4 grid gap-3">
+      <div className="mt-3 flex max-w-[220px] gap-1.5 rounded-[11px] bg-surface-2 p-1.5">
+        {(["liste", "carte"] as const).map((v) => (
+          <button
+            key={v}
+            type="button"
+            onClick={() => setView(v)}
+            className={`flex-1 rounded-lg py-1.5 text-sm font-extrabold capitalize ${
+              view === v ? "bg-surface text-ink shadow-sm" : "text-muted"
+            }`}
+          >
+            {v}
+          </button>
+        ))}
+      </div>
+
+      {view === "carte" && <OffersMap offers={filtered} />}
+
+      <div className={`mt-4 grid gap-3 ${view === "carte" ? "hidden" : ""}`}>
         {filtered.length === 0 && (
           <p className="py-8 text-center text-sm text-muted">
             Aucune offre pour ces filtres pour l&apos;instant.
