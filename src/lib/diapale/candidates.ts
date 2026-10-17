@@ -102,6 +102,20 @@ export async function getPublicOffer(supabase: SupabaseClient, offerId: string) 
   return data as JobOffer | null;
 }
 
+export const REPORT_REASONS = [
+  "On me demande de l'argent",
+  "Fausse annonce ou déjà pourvue",
+  "Contenu inapproprié",
+  "Autre",
+] as const;
+
+/** Signale une offre. Un second signalement du même utilisateur compte comme déjà fait. */
+export async function reportOffer(supabase: SupabaseClient, offerId: string, reason: string) {
+  const { error } = await supabase.from("offer_reports").insert({ offer_id: offerId, reason });
+  if (error && error.code !== "23505") return { error };
+  return { error: null };
+}
+
 /** Enregistre l'intérêt du candidat pour une offre (vue ou candidature). */
 export async function markInterest(
   supabase: SupabaseClient,

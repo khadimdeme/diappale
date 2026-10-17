@@ -5,6 +5,7 @@ import { getCurrentUser, getCurrentUserRole } from "@/lib/diapale/auth";
 import { getMyBaseProfile, getMyCandidateProfile, getPublicOffer } from "@/lib/diapale/candidates";
 import { getCompany } from "@/lib/diapale/companies";
 import ApplyButtons from "@/components/ApplyButtons";
+import ReportOffer from "@/components/ReportOffer";
 import { publishedLabel } from "@/lib/diapale/format";
 
 export default async function OffreDetailPage({
@@ -133,6 +134,17 @@ export default async function OffreDetailPage({
             candidateName={candidateName}
             loginHref={`/compte?mode=login&role=candidat&next=${encodeURIComponent(`/offres/${offer.id}`)}`}
           />
+          <p className="mt-4 rounded-xl bg-surface-2 p-3 text-xs text-muted">
+            Un recruteur sérieux ne demande jamais d&apos;argent avant une embauche. Si on te
+            demande de payer pour obtenir un poste, signale l&apos;offre.
+          </p>
+          <div className="mt-3">
+            <ReportOffer
+              offerId={offer.id}
+              loggedIn={!!user}
+              loginHref={`/compte?mode=login&role=candidat&next=${encodeURIComponent(`/offres/${offer.id}`)}`}
+            />
+          </div>
         </div>
       </div>
     </main>
