@@ -5,6 +5,7 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { computeMatchScore } from "@/lib/diapale/matching";
 import ApplyButtons from "@/components/ApplyButtons";
+import { publishedLabel } from "@/lib/diapale/format";
 import type { CandidateProfile, JobOffer } from "@/lib/diapale/types";
 
 const OffersMap = dynamic(() => import("./OffersMap"), {
@@ -22,7 +23,11 @@ export default function OffersBrowser({
   candidateProfile,
   candidateVille,
   candidateName,
+  initialQ = "",
+  initialVille = "",
 }: {
+  initialQ?: string;
+  initialVille?: string;
   offers: JobOffer[];
   /** null = visiteur non connecté (ou connecté en tant que recruteur). */
   candidateId: string | null;
@@ -30,8 +35,8 @@ export default function OffersBrowser({
   candidateVille: string | null;
   candidateName: string | null;
 }) {
-  const [q, setQ] = useState("");
-  const [ville, setVille] = useState("");
+  const [q, setQ] = useState(initialQ);
+  const [ville, setVille] = useState(initialVille);
   const [typeContrat, setTypeContrat] = useState("");
   const [view, setView] = useState<"liste" | "carte">("liste");
 
@@ -43,7 +48,7 @@ export default function OffersBrowser({
   const filtered = offers.filter(
     (o) =>
       (!q || o.titre.toLowerCase().includes(q.toLowerCase())) &&
-      (!ville || o.ville === ville) &&
+      (!ville || o.ville.toLowerCase().includes(ville.trim().toLowerCase())) &&
       (!typeContrat || o.type_contrat === typeContrat)
   );
 
@@ -56,18 +61,18 @@ export default function OffersBrowser({
           placeholder="Métier, mot-clé…"
           className="min-w-[150px] flex-1 rounded-[11px] border border-border bg-bg px-3.5 py-3 text-sm"
         />
-        <select
+        <input
           value={ville}
           onChange={(e) => setVille(e.target.value)}
-          className="rounded-[11px] border border-border bg-bg px-3.5 py-3 text-sm"
-        >
-          <option value="">Toutes les villes</option>
+          list="offres-villes"
+          placeholder="Ville"
+          className="w-36 rounded-[11px] border border-border bg-bg px-3.5 py-3 text-sm"
+        />
+        <datalist id="offres-villes">
           {villes.map((v) => (
-            <option key={v} value={v}>
-              {v}
-            </option>
+            <option key={v} value={v} />
           ))}
-        </select>
+        </datalist>
         <select
           value={typeContrat}
           onChange={(e) => setTypeContrat(e.target.value)}
@@ -89,7 +94,7 @@ export default function OffersBrowser({
             type="button"
             onClick={() => setView(v)}
             className={`flex-1 rounded-lg py-1.5 text-sm font-extrabold capitalize ${
-              view === v ? "bg-surface text-ink shadow-sm" : "text-muted"
+              view === v ? "bg-surface text-ink-text shadow-sm" : "text-muted"
             }`}
           >
             {v}
@@ -126,6 +131,7 @@ export default function OffersBrowser({
                     <span>{o.ville}</span>
                     {o.secteur && <span>{o.secteur}</span>}
                     {o.type_contrat && <span>{o.type_contrat}</span>}
+                    {publishedLabel(o.created_at) && <span>{publishedLabel(o.created_at)}</span>}
                   </div>
                 </div>
                 {candidateProfile?.metier && score >= 40 && (
@@ -152,7 +158,7 @@ export default function OffersBrowser({
                 />
                 <Link
                   href={`/offres/${o.id}`}
-                  className="text-xs font-bold text-ink underline underline-offset-2"
+                  className="text-xs font-bold text-ink-text underline underline-offset-2"
                 >
                   Voir les détails →
                 </Link>

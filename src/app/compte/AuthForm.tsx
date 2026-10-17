@@ -121,7 +121,7 @@ export default function AuthForm({
           type="button"
           onClick={() => setMode("signup")}
           className={`flex-1 rounded-lg py-2 text-sm font-extrabold ${
-            mode === "signup" ? "bg-surface text-ink shadow-sm" : "text-muted"
+            mode === "signup" ? "bg-surface text-ink-text shadow-sm" : "text-muted"
           }`}
         >
           Créer un compte
@@ -130,7 +130,7 @@ export default function AuthForm({
           type="button"
           onClick={() => setMode("login")}
           className={`flex-1 rounded-lg py-2 text-sm font-extrabold ${
-            mode === "login" ? "bg-surface text-ink shadow-sm" : "text-muted"
+            mode === "login" ? "bg-surface text-ink-text shadow-sm" : "text-muted"
           }`}
         >
           Se connecter

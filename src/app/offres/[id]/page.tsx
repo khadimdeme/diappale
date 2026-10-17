@@ -5,6 +5,7 @@ import { getCurrentUser, getCurrentUserRole } from "@/lib/diapale/auth";
 import { getMyBaseProfile, getMyCandidateProfile, getPublicOffer } from "@/lib/diapale/candidates";
 import { getCompany } from "@/lib/diapale/companies";
 import ApplyButtons from "@/components/ApplyButtons";
+import { publishedLabel } from "@/lib/diapale/format";
 
 export default async function OffreDetailPage({
   params,
@@ -64,12 +65,13 @@ export default async function OffreDetailPage({
           <span>{offer.ville}</span>
           {offer.secteur && <span>{offer.secteur}</span>}
           {offer.type_contrat && <span>{offer.type_contrat}</span>}
+          {publishedLabel(offer.created_at) && <span>{publishedLabel(offer.created_at)}</span>}
         </div>
         <h1 className="mt-2 font-display text-2xl font-bold">{offer.titre}</h1>
         {company && (
           <Link
             href={`/entreprises/${company.id}`}
-            className="mt-1 inline-block text-sm font-bold text-ink underline underline-offset-2"
+            className="mt-1 inline-block text-sm font-bold text-ink-text underline underline-offset-2"
           >
             {company.company_name}
           </Link>
@@ -82,7 +84,7 @@ export default async function OffreDetailPage({
 
         {offer.description && (
           <div className="mt-5">
-            <p className="text-xs font-extrabold tracking-wide text-ink uppercase">
+            <p className="text-xs font-extrabold tracking-wide text-ink-text uppercase">
               Description
             </p>
             <p className="mt-1.5 whitespace-pre-wrap text-sm text-text">
@@ -95,7 +97,7 @@ export default async function OffreDetailPage({
           offer.niveau_etude_requis ||
           offer.competences_requises?.length > 0) && (
           <div className="mt-5">
-            <p className="text-xs font-extrabold tracking-wide text-ink uppercase">
+            <p className="text-xs font-extrabold tracking-wide text-ink-text uppercase">
               Profil recherché
             </p>
             <div className="mt-1.5 flex flex-wrap gap-2">
@@ -121,7 +123,7 @@ export default async function OffreDetailPage({
         )}
 
         <div className="mt-6 border-t border-border pt-5">
-          <p className="mb-2 text-xs font-extrabold tracking-wide text-ink uppercase">
+          <p className="mb-2 text-xs font-extrabold tracking-wide text-ink-text uppercase">
             Postuler
           </p>
           <ApplyButtons

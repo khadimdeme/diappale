@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { computeMatchScore } from "@/lib/diapale/matching";
 import ApplyButtons from "@/components/ApplyButtons";
+import { publishedLabel } from "@/lib/diapale/format";
 import type { CandidateProfile, JobOffer } from "@/lib/diapale/types";
 
 const TYPES_CONTRAT = ["CDI", "CDD", "Stage", "Alternance", "Mission", "Journalier", "Freelance"];
@@ -97,6 +98,7 @@ export default function JobList({
                     <span>{o.ville}</span>
                     {o.secteur && <span>{o.secteur}</span>}
                     {o.type_contrat && <span>{o.type_contrat}</span>}
+                    {publishedLabel(o.created_at) && <span>{publishedLabel(o.created_at)}</span>}
                   </div>
                 </div>
                 {candidateProfile?.metier && score >= 40 && (
@@ -122,7 +124,7 @@ export default function JobList({
               />
               <Link
                 href={`/offres/${o.id}`}
-                className="w-fit text-xs font-bold text-ink underline underline-offset-2"
+                className="w-fit text-xs font-bold text-ink-text underline underline-offset-2"
               >
                 Voir les détails →
               </Link>

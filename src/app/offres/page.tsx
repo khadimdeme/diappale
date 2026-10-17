@@ -5,7 +5,12 @@ import { getMyBaseProfile, getMyCandidateProfile, listActiveOffers } from "@/lib
 import type { CandidateProfile } from "@/lib/diapale/types";
 import OffersBrowser from "./OffersBrowser";
 
-export default async function OffresPage() {
+export default async function OffresPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string; ville?: string }>;
+}) {
+  const { q = "", ville = "" } = await searchParams;
   const supabase = await createClient();
   const user = await getCurrentUser(supabase);
   const offers = await listActiveOffers(supabase);
@@ -48,7 +53,7 @@ export default async function OffresPage() {
       </div>
 
       <div className="mt-6">
-        <p className="text-xs font-extrabold tracking-wide text-ink uppercase">
+        <p className="text-xs font-extrabold tracking-wide text-ink-text uppercase">
           Offres
         </p>
         <h1 className="mt-1 font-display text-2xl font-bold">
@@ -61,6 +66,8 @@ export default async function OffresPage() {
       </div>
 
       <OffersBrowser
+        initialQ={q}
+        initialVille={ville}
         offers={offers}
         candidateId={candidateId}
         candidateProfile={candidateProfile}

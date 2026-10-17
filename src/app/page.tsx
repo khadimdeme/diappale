@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { listActiveOffers } from "@/lib/diapale/candidates";
+import { publishedLabel } from "@/lib/diapale/format";
 
 const secteurs = [
   "Couture",
@@ -27,9 +28,9 @@ const etapes = [
   },
   {
     num: "03",
-    titre: "Une alerte, puis un contact direct",
+    titre: "Tu postules, il te contacte",
     texte:
-      "Dès que tu postules ou consultes une offre, le recruteur est prévenu et voit ton profil complet — il te contacte directement par WhatsApp ou email.",
+      "Quand tu postules, le recruteur voit ton profil complet dans son espace et peut te contacter directement par WhatsApp ou email. Tant que tu ne postules pas, ton profil reste privé.",
   },
 ];
 
@@ -73,7 +74,7 @@ export default async function Home() {
 
       {/* HERO */}
       <section className="mt-5 overflow-hidden rounded-[28px] border border-border bg-surface px-6 py-11 md:px-9">
-        <span className="inline-flex w-fit items-center gap-2 rounded-full border border-border bg-surface-2 px-3.5 py-1.5 text-xs font-extrabold tracking-wide text-ink uppercase">
+        <span className="inline-flex w-fit items-center gap-2 rounded-full border border-border bg-surface-2 px-3.5 py-1.5 text-xs font-extrabold tracking-wide text-ink-text uppercase">
           <span className="size-1.5 rounded-full bg-ink" /> Le Sénégal qui travaille
         </span>
         <h1 className="mt-4 max-w-[12ch] font-display text-4xl leading-[1.02] font-black tracking-tight text-ink md:text-6xl">
@@ -85,6 +86,26 @@ export default async function Home() {
           direct par WhatsApp ou email, et une interface qui reste rapide
           même avec une connexion lente.
         </p>
+        <form action="/offres" method="get" className="mt-6 flex max-w-xl flex-col gap-2 sm:flex-row">
+          <input
+            name="q"
+            placeholder="Métier ou mot-clé"
+            aria-label="Métier ou mot-clé"
+            className="min-w-0 flex-1 rounded-full border border-border bg-bg px-5 py-3.5 text-sm"
+          />
+          <input
+            name="ville"
+            placeholder="Ville"
+            aria-label="Ville"
+            className="rounded-full border border-border bg-bg px-5 py-3.5 text-sm sm:w-40"
+          />
+          <button
+            type="submit"
+            className="rounded-full bg-ink px-6 py-3.5 text-sm font-extrabold text-bg"
+          >
+            Rechercher
+          </button>
+        </form>
         <div className="mt-5 flex flex-wrap gap-2">
           {["Profil en 5 min", "Contact direct", "Visibilité boostée"].map(
             (chip) => (
@@ -106,7 +127,7 @@ export default async function Home() {
           </Link>
           <Link
             href="/compte?role=recruteur"
-            className="rounded-full border border-border px-5 py-3.5 text-sm font-extrabold text-ink"
+            className="rounded-full border border-border px-5 py-3.5 text-sm font-extrabold text-ink-text"
           >
             Je recrute
           </Link>
@@ -130,7 +151,7 @@ export default async function Home() {
       {/* OFFRES EN DIRECT */}
       <div className="mt-9 flex flex-wrap items-end justify-between gap-2">
         <div>
-          <p className="text-xs font-extrabold tracking-wide text-ink uppercase">
+          <p className="text-xs font-extrabold tracking-wide text-ink-text uppercase">
             En ce moment
           </p>
           <h2 className="mt-1 font-display text-2xl font-bold md:text-3xl">
@@ -139,7 +160,7 @@ export default async function Home() {
         </div>
         <Link
           href="/offres"
-          className="text-sm font-bold text-ink underline underline-offset-2"
+          className="text-sm font-bold text-ink-text underline underline-offset-2"
         >
           Voir toutes les offres →
         </Link>
@@ -160,6 +181,7 @@ export default async function Home() {
             <div className="mt-1 flex flex-wrap gap-2.5 text-xs text-muted">
               <span>{o.ville}</span>
               {o.type_contrat && <span>{o.type_contrat}</span>}
+              {publishedLabel(o.created_at) && <span>{publishedLabel(o.created_at)}</span>}
             </div>
             {o.salaire && (
               <div className="mt-1.5 text-sm font-semibold">{o.salaire}</div>
@@ -170,7 +192,7 @@ export default async function Home() {
 
       {/* SECTEURS */}
       <div className="mt-9">
-        <p className="text-xs font-extrabold tracking-wide text-ink uppercase">
+        <p className="text-xs font-extrabold tracking-wide text-ink-text uppercase">
           Représenté sur la plateforme
         </p>
         <h2 className="mt-1 text-base font-bold text-muted">
@@ -190,7 +212,7 @@ export default async function Home() {
 
       {/* COMMENT ÇA MARCHE */}
       <div className="mt-13">
-        <p className="text-xs font-extrabold tracking-wide text-ink uppercase">
+        <p className="text-xs font-extrabold tracking-wide text-ink-text uppercase">
           Comment ça marche
         </p>
         <h2 className="mt-1 font-display text-2xl font-bold md:text-3xl">

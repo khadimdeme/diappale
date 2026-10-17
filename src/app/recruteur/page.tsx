@@ -57,7 +57,7 @@ export default async function RecruteurPage() {
       </div>
 
       <div className="mt-8">
-        <p className="text-xs font-extrabold tracking-wide text-ink uppercase">
+        <p className="text-xs font-extrabold tracking-wide text-ink-text uppercase">
           Vos offres
         </p>
         <h2 className="mt-1 font-display text-xl font-bold">
@@ -73,7 +73,7 @@ export default async function RecruteurPage() {
         {offers.length === 0 && (
           <div className="rounded-2xl border border-border bg-surface-2 p-5 text-sm text-muted">
             Aucune offre publiée pour l&apos;instant.{" "}
-            <Link href="/recruteur/offres/nouvelle" className="font-bold text-ink underline">
+            <Link href="/recruteur/offres/nouvelle" className="font-bold text-ink-text underline">
               Publier une offre
             </Link>
           </div>
@@ -90,7 +90,7 @@ export default async function RecruteurPage() {
               </h4>
               <p className="text-xs text-muted">{o.ville}</p>
             </div>
-            <span className="rounded-full bg-surface-2 px-3 py-1.5 text-xs font-extrabold text-ink">
+            <span className="rounded-full bg-surface-2 px-3 py-1.5 text-xs font-extrabold text-ink-text">
               {interestCounts[o.id] ?? 0} candidat(s)
             </span>
           </Link>

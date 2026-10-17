@@ -60,7 +60,7 @@ export default function CguPage() {
           <h2 className="font-display text-lg font-bold">Contact</h2>
           <p className="mt-1.5 text-muted">
             Une question sur ces conditions ? Écris-nous à{" "}
-            <a href="mailto:contact@diapale.sn" className="font-bold text-ink underline">
+            <a href="mailto:contact@diapale.sn" className="font-bold text-ink-text underline">
               contact@diapale.sn
             </a>
             .

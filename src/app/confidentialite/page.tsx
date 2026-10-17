@@ -47,7 +47,7 @@ export default function ConfidentialitePage() {
             Tes données sont hébergées chez Supabase, un service
             d&apos;hébergement sécurisé. L&apos;accès à ton profil complet est
             limité : un recruteur ne peut voir ton profil que si tu as
-            postulé ou consulté une de ses offres — jamais en fouillant
+            postulé à l&apos;une de ses offres, jamais en fouillant
             librement.
           </p>
         </section>
@@ -66,7 +66,7 @@ export default function ConfidentialitePage() {
             Tu peux à tout moment modifier ton profil, supprimer ton CV ou tes
             photos depuis ton espace. Pour supprimer ton compte entièrement ou
             pour toute question sur tes données, écris-nous à{" "}
-            <a href="mailto:contact@diapale.sn" className="font-bold text-ink underline">
+            <a href="mailto:contact@diapale.sn" className="font-bold text-ink-text underline">
               contact@diapale.sn
             </a>
             .

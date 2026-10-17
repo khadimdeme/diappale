@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { getCompany, listCompanyOffers } from "@/lib/diapale/companies";
+import WhatsAppIcon from "@/components/WhatsAppIcon";
 
 export default async function EntreprisePage({
   params,
@@ -49,16 +50,17 @@ export default async function EntreprisePage({
                 `Bonjour, je vous contacte via Diapalé au sujet d'une opportunité chez ${company.company_name}.`
               )}`}
               target="_blank"
-              className="inline-block rounded-full bg-[#25D366] px-5 py-2.5 text-sm font-bold text-[#06210f]"
+              className="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-5 py-2.5 text-sm font-bold text-[#06210f]"
             >
-              💬 Contacter sur WhatsApp
+              <WhatsAppIcon size={18} />
+              Contacter sur WhatsApp
             </a>
           </div>
         )}
       </div>
 
       <div className="mt-6">
-        <p className="text-xs font-extrabold tracking-wide text-ink uppercase">
+        <p className="text-xs font-extrabold tracking-wide text-ink-text uppercase">
           Offres
         </p>
         <h2 className="font-display text-xl font-bold">

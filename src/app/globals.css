@@ -8,6 +8,7 @@
   /* Vert direct, façon Alo Region — pas d'invention de nuance maison. */
   --ink: #2fa97c;
   --ink-2: #1f8c63;
+  --ink-text: #1a7a55;
   --bg: #f5f4f0;
   --surface: #ffffff;
   --surface-2: #ebe9e4;
@@ -26,6 +27,7 @@
   :root:not([data-theme="light"]) {
     --ink: #59d9a6;
     --ink-2: #3ec28f;
+    --ink-text: #59d9a6;
     --bg: #0e1412;
     --surface: #182421;
     --surface-2: #202e2a;
@@ -44,6 +46,7 @@
 :root[data-theme="dark"] {
   --ink: #59d9a6;
   --ink-2: #3ec28f;
+  --ink-text: #59d9a6;
   --bg: #0e1412;
   --surface: #182421;
   --surface-2: #202e2a;
@@ -61,6 +64,7 @@
 @theme inline {
   --color-ink: var(--ink);
   --color-ink-2: var(--ink-2);
+  --color-ink-text: var(--ink-text);
   --color-bg: var(--bg);
   --color-surface: var(--surface);
   --color-surface-2: var(--surface-2);

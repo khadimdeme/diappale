@@ -17,7 +17,7 @@ export default async function ComptePage({
         ← Retour
       </Link>
       <div className="mt-4 rounded-3xl border border-border bg-surface p-6 shadow-sm md:p-8">
-        <p className="text-xs font-extrabold tracking-wide text-ink uppercase">
+        <p className="text-xs font-extrabold tracking-wide text-ink-text uppercase">
           Première étape
         </p>
         <h1 className="mt-1 font-display text-2xl font-bold">

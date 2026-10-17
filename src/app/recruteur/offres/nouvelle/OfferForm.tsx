@@ -18,12 +18,22 @@ export default function OfferForm({ recruiterId }: { recruiterId: string }) {
   const [contactEmail, setContactEmail] = useState("");
   const [experienceLevel, setExperienceLevel] = useState<ExperienceLevel | "">("");
   const [niveauEtude, setNiveauEtude] = useState("");
-  const [competencesRecherchees, setCompetencesRecherchees] = useState("");
+  const [competences, setCompetences] = useState<string[]>([]);
+  const [competenceDraft, setCompetenceDraft] = useState("");
   const [showProfil, setShowProfil] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const supabase = createClient();
   const router = useRouter();
+
+  function addCompetences(raw: string) {
+    const items = raw
+      .split(",")
+      .map((c) => c.trim())
+      .filter((c) => c && !competences.some((x) => x.toLowerCase() === c.toLowerCase()));
+    if (items.length) setCompetences((list) => [...list, ...items]);
+    setCompetenceDraft("");
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -40,7 +50,7 @@ export default function OfferForm({ recruiterId }: { recruiterId: string }) {
       contact_email: contactEmail,
       experience_level: experienceLevel,
       niveau_etude_requis: niveauEtude,
-      competences_requises: competencesRecherchees,
+      competences_requises: competences.join(", "),
     });
 
     setSaving(false);
@@ -124,7 +134,7 @@ export default function OfferForm({ recruiterId }: { recruiterId: string }) {
         <button
           type="button"
           onClick={() => setShowProfil((s) => !s)}
-          className="text-sm font-bold text-ink underline underline-offset-2"
+          className="text-sm font-bold text-ink-text underline underline-offset-2"
         >
           {showProfil ? "− Masquer" : "+ Préciser le profil recherché"}{" "}
           <span className="font-normal text-muted">(facultatif)</span>
@@ -155,13 +165,43 @@ export default function OfferForm({ recruiterId }: { recruiterId: string }) {
             />
           </Field>
           <div className="sm:col-span-2">
-            <Field label="Compétences recherchées (séparées par des virgules)">
-              <input
-                className="in"
-                placeholder="Ex : Excel, Comptabilité, Permis B"
-                value={competencesRecherchees}
-                onChange={(e) => setCompetencesRecherchees(e.target.value)}
-              />
+            <Field label="Compétences recherchées">
+              <div className="in flex flex-wrap items-center gap-1.5">
+                {competences.map((c) => (
+                  <span
+                    key={c}
+                    className="inline-flex items-center gap-1 rounded-full bg-surface-2 py-1 pr-1.5 pl-3 text-xs font-bold"
+                  >
+                    {c}
+                    <button
+                      type="button"
+                      aria-label={`Retirer ${c}`}
+                      onClick={() => setCompetences((list) => list.filter((x) => x !== c))}
+                      className="flex size-4 items-center justify-center rounded-full text-muted hover:text-text"
+                    >
+                      ×
+                    </button>
+                  </span>
+                ))}
+                <input
+                  className="min-w-[8rem] flex-1 bg-transparent text-sm outline-none"
+                  placeholder={competences.length ? "Ajouter…" : "Ex : Excel, Permis B (Entrée pour ajouter)"}
+                  value={competenceDraft}
+                  onChange={(e) => {
+                    if (e.target.value.endsWith(",")) addCompetences(e.target.value);
+                    else setCompetenceDraft(e.target.value);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      addCompetences(competenceDraft);
+                    } else if (e.key === "Backspace" && !competenceDraft && competences.length) {
+                      setCompetences((list) => list.slice(0, -1));
+                    }
+                  }}
+                  onBlur={() => competenceDraft && addCompetences(competenceDraft)}
+                />
+              </div>
             </Field>
           </div>
         </>

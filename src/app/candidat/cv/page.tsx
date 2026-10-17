@@ -47,7 +47,7 @@ export default async function CvPage() {
           <a
             href={candidateProfile.cv_url}
             target="_blank"
-            className="mt-3 inline-block text-sm font-bold text-ink underline underline-offset-2"
+            className="mt-3 inline-block text-sm font-bold text-ink-text underline underline-offset-2"
           >
             Ouvrir dans un nouvel onglet
           </a>

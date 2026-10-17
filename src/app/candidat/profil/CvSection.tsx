@@ -62,7 +62,7 @@ export default function CvSection({
           <a
             href={cvUrl}
             target="_blank"
-            className="flex items-center gap-2 text-sm font-bold text-ink underline underline-offset-2"
+            className="flex items-center gap-2 text-sm font-bold text-ink-text underline underline-offset-2"
           >
             Voir mon CV actuel
           </a>

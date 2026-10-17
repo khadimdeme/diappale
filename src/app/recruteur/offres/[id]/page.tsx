@@ -5,6 +5,7 @@ import { getCurrentUser } from "@/lib/diapale/auth";
 import { getInterestedCandidates, getOffer } from "@/lib/diapale/recruiters";
 import { computeMatchScore } from "@/lib/diapale/matching";
 import TopNav from "@/components/TopNav";
+import WhatsAppIcon from "@/components/WhatsAppIcon";
 import StatusSelect from "./StatusSelect";
 
 export default async function OffreCandidatsPage({
@@ -114,9 +115,10 @@ export default async function OffreCandidatsPage({
                     <a
                       href={`https://wa.me/${profile.phone.replace(/\D/g, "")}`}
                       target="_blank"
-                      className="rounded-[9px] bg-[#25D366] px-3.5 py-2.5 text-xs font-bold text-[#06210f]"
+                      className="inline-flex items-center gap-1.5 rounded-[9px] bg-[#25D366] px-3.5 py-2.5 text-xs font-bold text-[#06210f]"
                     >
-                      💬 WhatsApp
+                      <WhatsAppIcon />
+                      WhatsApp
                     </a>
                   )}
                   <StatusSelect offerId={offer.id} candidateId={profile.id} currentStatus={status} />

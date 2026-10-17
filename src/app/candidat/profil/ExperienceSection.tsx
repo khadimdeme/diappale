@@ -101,7 +101,7 @@ export default function ExperienceSection({
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="mt-4 text-sm font-bold text-ink underline underline-offset-2"
+          className="mt-4 text-sm font-bold text-ink-text underline underline-offset-2"
         >
           + Ajouter une expérience
         </button>
